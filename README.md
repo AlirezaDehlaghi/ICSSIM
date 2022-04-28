@@ -21,7 +21,7 @@ git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
 Run the sample project using the prepared script 'init.sh'
 ```
 cd ICSSIM/deployments
-sodu ./init.sh
+./init.sh
 ```
 
 ### Run in GNS3
