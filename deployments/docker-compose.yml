@@ -1,0 +1,126 @@
+version: "3.9"
+services:
+  pys:
+    build: ics-docker/.
+    privileged: true
+    working_dir: /src
+    entrypoint: ["./start.sh", "FactorySimulation.py"]
+    container_name: pys
+    volumes:
+      - ../src:/src
+    networks:
+      fnet:
+        ipv4_address: 192.168.1.31
+      
+  plc1:
+    build: ics-docker/.
+    privileged: true
+    working_dir: /src
+    entrypoint: ["./start.sh", "PLC1.py"]
+    container_name: plc1
+    volumes:
+      - ../src:/src
+    networks:
+      wnet:
+        ipv4_address: 192.168.0.11
+      fnet:
+        ipv4_address: 192.168.1.11
+
+      
+  plc2:
+    build: ics-docker/.
+    #stdin_open: true # docker run -i
+    #tty: true
+    privileged: true
+    working_dir: /src
+    entrypoint: ["./start.sh", "PLC2.py"]
+    container_name: plc2
+    volumes:
+      - ../src:/src
+    networks:
+      wnet:
+        ipv4_address: 192.168.0.12
+      fnet:
+        ipv4_address: 192.168.1.12
+      
+  hmi1:
+    build: ics-docker/.
+    stdin_open: true # docker run -i
+    tty: true  
+    working_dir: /src
+    privileged: true
+    entrypoint: ["./start.sh", "HMI1.py"]
+    container_name: hmi1
+    volumes:
+      - ../src:/src
+    networks:
+      wnet:
+        ipv4_address: 192.168.0.21
+        
+  hmi2:
+    build: ics-docker/.
+    stdin_open: true # docker run -i
+    tty: true 
+    privileged: true
+    working_dir: /src
+    entrypoint: ["./start.sh", "HMI2.py"]
+    container_name: hmi2
+    volumes:
+      - ../src:/src
+    networks:
+      wnet:
+        ipv4_address: 192.168.0.22
+        
+        
+  attacker:
+    build: ics-docker/.
+    stdin_open: true # docker run -i
+    tty: true 
+    privileged: true
+    tty: true
+    working_dir: /src
+    entrypoint: ["./start.sh", "Attacker.py"]
+    container_name: attacker
+    volumes:
+      - ../src:/src
+    networks:
+      wnet:
+        ipv4_address: 192.168.0.41
+        
+  attacker2:
+    build: attacker-docker/.
+    stdin_open: true # docker run -i
+    tty: true 
+    privileged: true
+    tty: true
+    working_dir: /src
+    entrypoint: ["./start.sh", "Attacker.py"]
+    container_name: attacker2
+    volumes:
+      - ../src:/src
+    networks:
+      wnet:
+        ipv4_address: 192.168.0.42
+
+      
+networks:
+  wnet:
+    driver: bridge
+    name: icsnet
+    ipam:
+     config:
+       - subnet: 192.168.0.0/24
+         gateway: 192.168.0.1
+    driver_opts:
+      com.docker.network.bridge.name: br_icsnet
+  fnet:
+    driver: bridge
+    name: phynet
+    ipam:
+     config:
+       - subnet: 192.168.1.0/24
+         gateway: 192.168.1.1 
+    driver_opts:
+      com.docker.network.bridge.name: br_phynet
+
+

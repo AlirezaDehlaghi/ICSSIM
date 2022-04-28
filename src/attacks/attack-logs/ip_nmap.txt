@@ -1,0 +1,35 @@
+# Nmap 7.80 scan initiated Thu Mar  3 14:55:22 2022 as: nmap -p- -oN ./attacks/attack-logs/ip_nmap.txt 192.168.0.1-255
+Nmap scan report for dlinkrouter (192.168.0.1)
+Host is up (0.000019s latency).
+All 65535 scanned ports on dlinkrouter (192.168.0.1) are closed
+MAC Address: 02:42:EE:33:D9:7C (Unknown)
+
+Nmap scan report for plc1.icsnet (192.168.0.11)
+Host is up (0.000021s latency).
+Not shown: 65534 closed ports
+PORT    STATE SERVICE
+502/tcp open  mbap
+MAC Address: 02:42:C0:A8:00:0B (Unknown)
+
+Nmap scan report for plc2.icsnet (192.168.0.12)
+Host is up (0.000020s latency).
+Not shown: 65534 closed ports
+PORT    STATE SERVICE
+502/tcp open  mbap
+MAC Address: 02:42:C0:A8:00:0C (Unknown)
+
+Nmap scan report for hmi1.icsnet (192.168.0.21)
+Host is up (0.000026s latency).
+All 65535 scanned ports on hmi1.icsnet (192.168.0.21) are closed
+MAC Address: 02:42:C0:A8:00:15 (Unknown)
+
+Nmap scan report for hmi2.icsnet (192.168.0.22)
+Host is up (0.000013s latency).
+All 65535 scanned ports on hmi2.icsnet (192.168.0.22) are closed
+MAC Address: 02:42:C0:A8:00:16 (Unknown)
+
+Nmap scan report for 8839d3f027d8 (192.168.0.41)
+Host is up (0.0000090s latency).
+All 65535 scanned ports on 8839d3f027d8 (192.168.0.41) are closed
+
+# Nmap done at Thu Mar  3 14:55:37 2022 -- 255 IP addresses (6 hosts up) scanned in 15.35 seconds
