@@ -8,8 +8,11 @@ This is the ICSSIM source code and user manual for simulating industrial control
 
 #### Pre steps
 Make sure that you have already installed the following applications and tools. 
+
 -git
+
 -Docker
+
 -Docker-Compose
 
 #### getting ICSSIM and the sample project
