@@ -7,7 +7,7 @@ This is the ICSSIM source code and user manual for simulating industrial control
 ### Run in Docker container Environement
 
 #### Pre steps
-Make sure that you already installed following application and tools. 
+Make sure that you have already installed the following applications and tools. 
 -git
 -Docker
 -Docker-Compose
@@ -20,7 +20,7 @@ git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
 #### Running the sample project 
 Run the sample project using the prepared script 'init.sh'
 ```
-CD ICSSIM/deployments
+cd ICSSIM/deployments
 sodu ./init.sh
 ```
 
