@@ -5,9 +5,23 @@ This is the ICSSIM source code and user manual for simulating industrial control
 ## Run a Sample Bottle Filling Factory
 
 ### Run in Docker container Environement
-Clone The probject into your local file.
+
+#### Pre steps
+Make sure that you already installed following application and tools. 
+-git
+-Docker
+-Docker-Compose
+
+#### getting ICSSIM and the sample project
+Clone The probject into your local file using following git commands.
 ```
 git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
+```
+#### Running the sample project 
+Run the sample project using the prepared script 'init.sh'
+```
+CD ICSSIM/deployments
+sodu ./init.sh
 ```
 
 ### Run in GNS3
