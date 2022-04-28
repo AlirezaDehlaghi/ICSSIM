@@ -20,8 +20,8 @@ Clone The probject into your local directory using following git command.
 git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
 ```
 #### Running the sample project 
-Run the sample project using the prepared script **init.sh**
-[enter link description here](deployments/)
+Run the sample project using the prepared script 
+[init.sh](deployments/init.sh)
 ```
 cd ICSSIM/deployments
 ./init.sh
