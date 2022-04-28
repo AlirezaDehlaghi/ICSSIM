@@ -23,5 +23,10 @@ Run the sample project using the prepared script 'init.sh'
 cd ICSSIM/deployments
 ./init.sh
 ```
-
+#### Check successful running
+If 'init.sh' commands runs to the end, it will show the status of all containers. In the case that all containers are 'Up' then project is running successfully.
+You could also see the status of containers with following command:
+```
+sudo docker-compose ps
+```
 ### Run in GNS3
