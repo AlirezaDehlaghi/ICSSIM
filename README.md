@@ -42,3 +42,14 @@ sudo docker-compose ps
 ### Operating the control system and apply cyberattacks
 In the directory [deployments](deployments/) there exist some scripts such as [hmi1.sh](deployments/hmi1.sh), [hmi2.sh](deployments/hmi2.sh) or [attacker.sh](deployments/attacker.sh) which can attach user to the container. 
 ## Run in GNS3
+To run the ICSSIM and the sample Bottle Filling factory clone the prject and use the portable GNS3 file to create a new project in GNS3.
+
+### Getting ICSSIM and the sample project
+Clone The probject into your local directory using following git command.
+```
+git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
+```
+
+### Import Project in GNS3
+Import the portable project [init.sh](deployments/init.sh)
+
