@@ -40,5 +40,5 @@ sudo docker-compose ps
 ```
 
 #### Operating the control system and apply cyberattacks
-In the directory [deployments](deployments/) there exist some scripts such as [HMI1.sh](deployments/HMI1.sh), [HMI2.sh](deployments/HMI2.sh) or [Attacker.sh](deployments/Attacker.sh) which can attach user to the container. 
+In the directory [deployments](deployments/) there exist some scripts such as [hmi1.sh](deployments/hmi1.sh), [hmi2.sh](deployments/hmi2.sh) or [attacker.sh](deployments/attacker.sh) which can attach user to the container. 
 ### Run in GNS3
