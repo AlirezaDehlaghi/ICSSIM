@@ -5,7 +5,7 @@ class SimulationConfig:
     EXECUTION_MODE_GNS3 = 'gns3'
 
     # configurable
-    EXECUTION_MODE = EXECUTION_MODE_DOCKER
+    EXECUTION_MODE = EXECUTION_MODE_GNS3
 
 
 class PHYSICS:
@@ -61,7 +61,7 @@ class TAG:
         TAG_CONVEYOR_BELT_ENGINE_MODE:          {'id': 9, 'plc': 2, 'type': 'output', 'fault': 0.0, 'default': 3},
 
         TAG_BOTTLE_LEVEL_VALUE:                 {'id': 10, 'plc': 2, 'type': 'input', 'fault': 0.0, 'default': 0},
-        TAG_BOTTLE_LEVEL_MAX:                   {'id': 11, 'plc': 2, 'type': 'input', 'fault': 0.0, 'default': 1.8},
+        TAG_BOTTLE_LEVEL_MAX:                   {'id': 11, 'plc': 2, 'type': 'output', 'fault': 0.0, 'default': 1.8},
 
         TAG_BOTTLE_DISTANCE_TO_FILLER_VALUE:    {'id': 12, 'plc': 2, 'type': 'input', 'fault': 0.0, 'default': 0},
     }
