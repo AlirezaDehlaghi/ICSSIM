@@ -11,6 +11,9 @@ The bottle-filling factory control process is responsible for filling bottles us
 
 ![The Sample bottle filling factory](Images/physical_process.png)
 
+Below figure presents the network architecture for the bottle filling factory. The proposed network architecture realizes the first three layers of Purdue reference architecture. The connection between Tier 1 and 2 is hardwired, which is implemented using the shared memory in Docker container technology. on a simulation environment, a Local Area Network (LAN) is created to realize a network between Tier 2 and 3. We also assume that the attacker, as a malicious \gls{hmi}, has access to this network; therefore, we consider an additional node to act as an attacker in this architecture. 
+
+![Network architecture for the sample bottle filling plant](Images/sample_architecture.png)
 
 # Run a Sample Bottle Filling Factory
 
