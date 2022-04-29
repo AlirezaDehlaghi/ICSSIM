@@ -5,7 +5,7 @@ class SimulationConfig:
     EXECUTION_MODE_GNS3 = 'gns3'
 
     # configurable
-    EXECUTION_MODE = EXECUTION_MODE_GNS3
+    EXECUTION_MODE = EXECUTION_MODE_DOCKER
 
 
 class PHYSICS:
