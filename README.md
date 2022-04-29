@@ -19,6 +19,12 @@ Clone The probject into your local directory using following git command.
 ```
 git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
 ```
+
+check the file [Config.py](src/Config.py) and make sure that EXECUTION_MODE varibale is set to EXECUTION_MODE_DOCKER as follow:
+```
+EXECUTION_MODE = EXECUTION_MODE_DOCKER
+```
+
 #### Running the sample project 
 Run the sample project using the prepared script 
 [init.sh](deployments/init.sh)
