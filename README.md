@@ -51,5 +51,5 @@ git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
 ```
 
 ### Import Project in GNS3
-Import the portable project ([deployments/GNS3/ICSSIM-GNS3-Portable.gns3project](deployments/GNS3/ICSSIM-GNS3-Portable.gns3project))
+Import the portable project ([deployments/GNS3/ICSSIM-GNS3-Portable.gns3project](deployments/GNS3/ICSSIM-GNS3-Portable.gns3project)) using menu **File->Import Portable Project**
 
