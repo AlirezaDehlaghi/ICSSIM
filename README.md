@@ -1,6 +1,15 @@
 
 # ICSSIM
-This is the ICSSIM source code and user manual for simulating industrial control system testbed for cybersecurity experiments
+This is the ICSSIM source code and user manual for simulating industrial control system testbed for cybersecurity experiments.
+
+ICSSIM is a framework to build customized virtual ICS security testbeds cyber threats and attacks can be investigated, and mitigations evaluated. ICSSIM is built on top of the Docker container technology, which provides realistic network emulation and runs ICS components on isolated private operating system kernels. 
+
+To demonestrate its functionality we create a bottle filling factory simulation using ICSSIM, although building a testbed using ICSSIM is not limited to this example, and we can replace bottle filling factory simulation with any other open-loop controlling process simulations.
+
+# Sample Bottle Filling Factory
+The bottle-filling factory control process is responsible for filling bottles using a water tank repository. The below figure shows the overall scenario including process and hardware. The proposed control process consists of two main hardware zones, each controlled by a standalone PLC, called PLC-1 and PLC-2. PLC-1 manages the water tank and its input and output valves. PLC-2 manages the conveyor belts to replace the filled bottle with an empty one.
+
+![The Sample bottle filling factory](Images/physical_process.png)
 
 
 # Run a Sample Bottle Filling Factory
