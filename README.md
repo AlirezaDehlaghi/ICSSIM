@@ -2,16 +2,16 @@
 # ICSSIM
 This is the ICSSIM source code and user manual for simulating industrial control system testbed for cybersecurity experiments.
 
-ICSSIM is a framework to build customized virtual ICS security testbeds cyber threats and attacks can be investigated, and mitigations evaluated. ICSSIM is built on top of the Docker container technology, which provides realistic network emulation and runs ICS components on isolated private operating system kernels. 
+The ICSSIM framework enables cyber threats and attacks to be investigated and mitigated by building a virtual ICS security testbed customized to suit their needs. As ICSSIM runs on separate private operating system kernels, it provides realistic network emulation and runs ICS components on Docker container technology. 
 
-To demonestrate its functionality we create a bottle filling factory simulation using ICSSIM, although building a testbed using ICSSIM is not limited to this example, and we can replace bottle filling factory simulation with any other open-loop controlling process simulations.
+ICSSIM can also be used to simulate any other open-loop controlling process, such as bottle filling, and allows us to build a testbed for any open-loop controlling process.
 
 # Sample Bottle Filling Factory
-The bottle-filling factory control process is responsible for filling bottles using a water tank repository. The below figure shows the overall scenario including process and hardware. The proposed control process consists of two main hardware zones, each controlled by a standalone PLC, called PLC-1 and PLC-2. PLC-1 manages the water tank and its input and output valves. PLC-2 manages the conveyor belts to replace the filled bottle with an empty one.
+A water tank repository is used to fill bottles during the bottle-filling factory control process. The below figure shows the overall scenario including process and hardware. The proposed control process consists of two main hardware zones, each managed by a standalone PLC, called PLC-1 and PLC-2. The water tank and valves are controlled by PLC-1. The conveyor belts are controlled by PLC-2 to switch out filled bottles with empty ones.
 
 ![The Sample bottle filling factory](Images/physical_process.png)
+An overview of the bottle filling factory network architecture is presented below. In the proposed network architecture, the first three layers of the Purdue reference architecture are realized. In Docker container technology, shared memory is used to implement the hard wired connection between Tiers 1 and 2. To simulate the network between Tiers 2 and 3, a Local Area Network (LAN) is created in a simulation environment. The attacker is also assumed to have access to this network as a malicious HMI, therefore we consider this node as an additional attacker in this architecture.
 
-Below figure presents the network architecture for the bottle filling factory. The proposed network architecture realizes the first three layers of Purdue reference architecture. The connection between Tier 1 and 2 is hardwired, which is implemented using the shared memory in Docker container technology. on a simulation environment, a Local Area Network (LAN) is created to realize a network between Tier 2 and 3. We also assume that the attacker, as a malicious \gls{hmi}, has access to this network; therefore, we consider an additional node to act as an attacker in this architecture. 
 
 ![Network architecture for the sample bottle filling plant](Images/sample_architecture.png)
 
