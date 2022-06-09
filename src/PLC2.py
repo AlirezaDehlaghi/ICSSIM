@@ -16,9 +16,7 @@ class PLC2(PLC):
             t1 = time.time()
             flow = self._get(TAG.TAG_TANK_OUTPUT_FLOW_VALUE)
             elapsed_time = round((time.time() - t1)*1000)
-            self.report("{} {}".format(
-                self.get_alive_time() / 1000,
-                elapsed_time / 1000), logging.INFO)
+            #self.report("{} {}".format(self.get_alive_time() / 1000, elapsed_time / 1000), logging.INFO)
 
             belt_position = self._get(TAG.TAG_BOTTLE_DISTANCE_TO_FILLER_VALUE)
             bottle_level = self._get(TAG.TAG_BOTTLE_LEVEL_VALUE)

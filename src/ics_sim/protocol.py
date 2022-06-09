@@ -85,8 +85,6 @@ class ClientModbus(Client, ModbusBase):
         self.client = ModbusClient(host=self.ip, port=self.port)
 
     def receive(self, tag_id):
-
-
         self.open()
         return self.decode(self.client.read_holding_registers(self.get_registers(tag_id), self._word_num))
 
@@ -95,11 +93,11 @@ class ClientModbus(Client, ModbusBase):
         self.client.write_multiple_registers(self.get_registers(tag_id), self.encode(value))
 
     def open(self):
-        if not self.client.is_open():
+        if not self.client.is_open:
             self.client.open()
 
     def close(self):
-        if self.client.is_open():
+        if self.client.is_open:
             self.client.close()
 
 
@@ -116,10 +114,12 @@ class ServerModbus(Server, ModbusBase):
         self.server.stop()
 
     def set(self, tag_id, value):
-        DataBank.set_words(self.get_registers(tag_id), self.encode(value))
+        self.server.data_bank.set_holding_registers(self.get_registers(tag_id),self.encode(value))
+        #DataBank.set_words(self.get_registers(tag_id), self.encode(value))
 
     def get(self, tag_id):
-        return self.decode(DataBank.get_words(self.get_registers(tag_id), self._word_num))
+        return self.decode(self.server.data_bank.get_holding_registers(self.get_registers(tag_id), self._word_num))
+        #return self.decode(DataBank.get_words(self.get_registers(tag_id), self._word_num))
 
 
 class ProtocolFactory:

@@ -103,18 +103,26 @@ class Runnable(ABC):
 
     def __do_loop(self):
         try:
+
             self.report("started", logging.INFO)
+
             self._before_start()
+
             self._start_time = self._current_loop_time = current_milli_cycle_time(self.__loop_cycle)
             while True:
+
                 self._last_loop_time = self._current_loop_time
                 wait = self._last_loop_time + self.__loop_cycle - current_milli_time()
+
                 if wait > 0:
                     time.sleep(wait / 1000)
 
+
                 self._current_loop_time = current_milli_cycle_time(self.__loop_cycle)
                 self._last_logic_start = current_milli_time()
+
                 self._logic()
+
                 self._last_logic_end = current_milli_time()
 
                 self._post_logic_update()
@@ -269,6 +277,7 @@ class PLC(DcsComponent):
 
     def _get(self, tag):
         if self._is_local_tag(tag):
+
             if self._is_input_tag(tag):
                 return self._sensor_connector.read(tag)
             else:
@@ -312,7 +321,9 @@ class PLC(DcsComponent):
         DcsComponent.stop(self)
 
     def _check_manual_input(self, control_tag, actuator_tag):
+
         mode = self._get(control_tag)
+
         if mode == 1:
             self._set(actuator_tag, 0)
             return True

@@ -9,9 +9,12 @@ class ConnectionTests(unittest.TestCase):
 
     def test_sqlite_connection(self):
         try:
+
             connection = SQLiteConnector(Connection.SQLITE_CONNECTION)
+
             value1 = 1
             value2 = 2
+
             connection.initialize([('value1', value1), ('value2', value2)])
 
             retrieved_value1 = connection.get('value1')

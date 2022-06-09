@@ -27,8 +27,8 @@ class ProtocolTests(unittest.TestCase):
     def test_ModbusServer(self):
         server = ModbusServer('127.0.0.1', 5001, no_block=True)
         server.start()
-        DataBank.set_words(5, [10])
-        received = DataBank.get_words(5)[0]
+        server.data_bank.set_holding_registers(5,[10])
+        received = server.data_bank.get_holding_registers(5,1)[0]
         server.stop()
 
         self.assertEqual(10, received, 'server read write is not compatible')

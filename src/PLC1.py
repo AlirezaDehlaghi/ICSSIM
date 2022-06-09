@@ -30,9 +30,7 @@ class PLC1(PLC):
 
     def _post_logic_update(self):
         super()._post_logic_update()
-        self.report("{} {}".format(
-            self.get_alive_time() / 1000,
-            self.get_loop_latency() / 1000), logging.INFO)
+        #self.report("{} {}".format( self.get_alive_time() / 1000, self.get_loop_latency() / 1000), logging.INFO)
 
 
 if __name__ == '__main__':
