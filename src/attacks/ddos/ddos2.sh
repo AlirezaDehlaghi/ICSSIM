@@ -2,4 +2,3 @@
 
 #cd src
 python3 DDosAttacker2.py
-ls

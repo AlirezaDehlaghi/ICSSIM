@@ -72,6 +72,21 @@ services:
         ipv4_address: 192.168.0.22
         
         
+  hmi3:
+    build: ics-docker/.
+    stdin_open: true # docker run -i
+    tty: true 
+    privileged: true
+    working_dir: /src
+    entrypoint: ["./start.sh", "HMI3.py"]
+    container_name: hmi3
+    volumes:
+      - ../src:/src
+    networks:
+      wnet:
+        ipv4_address: 192.168.0.23
+        
+        
   attacker:
     build: ics-docker/.
     stdin_open: true # docker run -i

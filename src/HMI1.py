@@ -11,7 +11,7 @@ class HMI1(HMI):
 
         self._rows = {}
         self.title_length = 27
-        self.msg1_length = 17
+        self.msg1_length = 21
         self.msg2_length = 10
         self._border = '-' * (self.title_length + self.msg1_length + self.msg2_length + 4)
 

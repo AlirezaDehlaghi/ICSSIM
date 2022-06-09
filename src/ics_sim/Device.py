@@ -343,6 +343,7 @@ class HMI(DcsComponent):
 
     def __init__(self, name,  tags, plcs, loop=SpeedConfig.DEFAULT_PLC_PERIOD_MS):
         DcsComponent.__init__(self, name, tags, plcs, loop)
+        self.__clear_scr = True
 
     @staticmethod
     def _make_text(msg, color):
@@ -352,7 +353,8 @@ class HMI(DcsComponent):
         sys.stdin = os.fdopen(self._std)
 
     def _logic(self):
-        os.system('clear')
+        if self.__clear_scr:
+            os.system('clear')
         self._display()
         self._operate()
 
@@ -361,6 +363,10 @@ class HMI(DcsComponent):
 
     def _operate(self):
         pass
+
+    def _set_clear_scr(self, value):
+        self.__clear_scr = value
+
 
 
 
