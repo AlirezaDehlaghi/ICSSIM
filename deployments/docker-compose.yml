@@ -8,6 +8,8 @@ services:
     container_name: pys
     volumes:
       - ../src:/src
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       fnet:
         ipv4_address: 192.168.1.31
@@ -20,6 +22,8 @@ services:
     container_name: plc1
     volumes:
       - ../src:/src
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       wnet:
         ipv4_address: 192.168.0.11
@@ -37,6 +41,8 @@ services:
     container_name: plc2
     volumes:
       - ../src:/src
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       wnet:
         ipv4_address: 192.168.0.12
@@ -53,6 +59,8 @@ services:
     container_name: hmi1
     volumes:
       - ../src:/src
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       wnet:
         ipv4_address: 192.168.0.21
@@ -82,6 +90,8 @@ services:
     container_name: hmi3
     volumes:
       - ../src:/src
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       wnet:
         ipv4_address: 192.168.0.23
@@ -98,6 +108,9 @@ services:
     container_name: attacker
     volumes:
       - ../src:/src
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      
     networks:
       wnet:
         ipv4_address: 192.168.0.41
@@ -113,6 +126,8 @@ services:
     container_name: attacker2
     volumes:
       - ../src:/src
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
     networks:
       wnet:
         ipv4_address: 192.168.0.42

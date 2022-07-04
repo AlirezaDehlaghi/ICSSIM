@@ -1,9 +1,11 @@
+import logging
 import os
 import subprocess
 import sys
+from datetime import datetime
 from time import sleep
 
-from ics_sim.Device import Runnable
+from ics_sim.Device import Runnable, HMI
 
 
 class Attacker(Runnable):
@@ -11,45 +13,59 @@ class Attacker(Runnable):
         Runnable.__init__(self, 'Attacker', 100)
 
     def _before_start(self):
-        sys.stdin = os.fdopen(self._std)
+        Runnable._before_start(self)
+        self.__attack_path = './attacks'
+        self.__log_path = os.path.join(self.__attack_path,'attack-logs')
+
+        if not os.path.exists(self.__log_path):
+            os.makedirs(self.__log_path)
+
+        self.__log_attack_summary = self.setup_logger(
+            "log_summary",
+            logging.Formatter('%(message)s'),
+            file_dir= self.__log_path,
+            file_ext='.csv'
+        )
+
+        self.__attack_list = ['scan-ettercap', 'scan-ping', 'scan-nmap', 'mitm', 'ddos']
+
         pass
 
+    def __get_menu_line(self, number, text):
+        return '{} To apply the {} attack press {} \n'.format(
+            self._make_text(str(number)+')', self.COLOR_BLUE),
+            self._make_text(text, self.COLOR_GREEN),
+            self._make_text(str(number), self.COLOR_BLUE)
+        )
+
     def _logic(self):
-        os.system('clear')
-        menu = '\n'
-        menu += '1) To apply Scan Attack with ettercap\n'
-        menu += '2) To apply Scan Attack with ping \n'
-        menu += '3) To apply Scan Attack with Nmap \n'
-        menu += '4) To apply MitM attack \n'
-        menu += '5) To apply Dos Attack \n'
-        menu += '6) To apply TEMP attack\n'
+        menu = "\n"
+        for i in range(len(self.__attack_list)):
+            menu += self.__get_menu_line(i + 1, self.__attack_list[i])
         self.report(menu)
 
         try:
-            input1 = int(input('your choice (1 to 6): '))
-            if input1 < 1 or input1 > 6:
-                raise ValueError('just integer values between 1 and 6 are acceptable')
+            attack_name = int(input('your choice (1 to {}): '.format(len(self.__attack_list))))
+            if 0 < attack_name <= len(self.__attack_list):
+                attack_name = self.__attack_list[attack_name-1]
 
-            command = './attacks/attack{}.sh'.format(input1)
-            if input1 ==1:
-                command = './attacks/scan/scan_ettercap.sh'
-            elif input1 == 2:
-                command = './attacks/scan/scan_ping.sh'
-            elif input1 == 3:
-                command = './attacks/scan/scan_nmap.sh'
-            elif input1 == 4:
-                command = './attacks/mitm/mitm.sh'
-            elif input1 == 5:
-                command = './attacks/ddos/ddos.sh'
+            attack_path = os.path.join(self.__attack_path, attack_name + ".sh")
+            if not os.path.isfile(attack_path):
+                raise ValueError('command {} does not exist'.format(attack_path))
 
-            self.report('running ' + command)
-            subprocess.run(command)
+            self.report('running ' + attack_path)
+            log_file = os.path.join(self.__log_path,"log-{}.txt".format(attack_name))
+            start_time = datetime.now()
+            subprocess.run([attack_path, self.__log_path, log_file])
+            end_time = datetime.now()
+
+            self.__log_attack_summary.info("{},{},{}\n".format(attack_name, start_time, end_time))
 
         except ValueError as e:
             self.report(e.__str__())
 
         except Exception as e:
-            self.report('The input is invalid' + e.__str__())
+            self.report('The input is invalid ' + e.__str__())
 
         input('press inter to continue ...')
 
@@ -57,5 +73,3 @@ class Attacker(Runnable):
 if __name__ == '__main__':
     attacker = Attacker()
     attacker.start()
-
-

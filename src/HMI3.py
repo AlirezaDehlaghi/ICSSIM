@@ -17,7 +17,8 @@ class HMI3(HMI):
         HMI._before_start(self)
 
         while True:
-            response = input("Do you want to start auto manipulation of factory setting? \n").lower()
+            response = input("Do you want to start auto manipulation of factory setting? \n")
+            response = response.lower()
             if response == 'y' or response == 'yes':
                 self._set_clear_scr(False)
                 self.random_values = [["TANK LEVEL MIN" , 1 , 4.5] ,["TANK LEVEL MAX" , 5.5 , 9],["BOTTLE LEVEL MAX" , 1 , 1.9]]

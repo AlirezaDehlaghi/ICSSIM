@@ -35,4 +35,5 @@ class PLC1(PLC):
 
 if __name__ == '__main__':
     plc1 = PLC1()
+    plc1.set_record_variables(True)
     plc1.start()

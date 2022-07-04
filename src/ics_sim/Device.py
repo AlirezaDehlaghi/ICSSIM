@@ -60,33 +60,64 @@ class ActuatorConnector(Physics):
 
 
 class Runnable(ABC):
+    COLOR_RED = '\033[91m'
+    COLOR_GREEN = '\033[92m'
+    COLOR_BLUE = '\033[94m'
+    COLOR_CYAN = '\033[96m'
+    COLOR_YELLOW = '\033[93m'
+    COLOR_BOLD = '\033[1m'
+    COLOR_PURPLE = '\033[35m'
+
     def __init__(self, name, loop):
         validate_type(name, 'name', str)
         validate_type(loop, 'loop cycle', int)
+
         self.__name = name
         self.__loop_cycle = loop
+
         self.__loop_process = Process(target=self.__do_loop, args=())
         self._last_loop_time = 0
         self._current_loop_time = 0
         self._start_time = 0
         self._last_logic_start = 0
         self._last_logic_end = 0
-        self._last_execution_time = 0
+        self._initialize_logger()
+        self.__clear_scr = False
         self._std = sys.stdin.fileno()
-        self._logger = self.setup_logger()
+
         self.report("Created", logging.INFO)
 
-    def setup_logger(self):
+    def _initialize_logger(self):
+        self._logger = self.setup_logger(
+            "logs-" + self.name(),
+            logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        )
+
+    def _set_clear_scr(self, value):
+        self.__clear_scr = value
+
+    def _set_logger_level(self, level=logging.DEBUG):
+        self._logger.setLevel(level)
+
+    def setup_logger(self, name, format_str,  level=logging.INFO, file_dir = "./logs", file_ext = ".log" , write_mode="w"):
         """To setup as many loggers as you want"""
 
+        """
         logging.basicConfig(filename="./logs/log-" + self.__name +".log",
                             format='[%(levelname)s] [%(asctime)s] %(message)s ',
                             filemode='w')
+                            """
+        """To setup as many loggers as you want"""
+        file_path = os.path.join(file_dir,name) + file_ext
+        handler = logging.FileHandler(file_path, mode=write_mode)
+        handler.setFormatter(format_str)
+
         # Let us Create an object
-        logger = logging.getLogger(self.name())
+        logger = logging.getLogger(name)
 
         # Now we are going to Set the threshold of logger to DEBUG
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(level)
+        logger.addHandler(handler)
         return logger
 
     def name(self):
@@ -101,11 +132,15 @@ class Runnable(ABC):
         self._after_stop()
         self.report("stopped", logging.INFO)
 
+    def _after_stop(self):
+        pass
+
+    def _before_stop(self):
+        pass
+
     def __do_loop(self):
         try:
-
             self.report("started", logging.INFO)
-
             self._before_start()
 
             self._start_time = self._current_loop_time = current_milli_cycle_time(self.__loop_cycle)
@@ -121,10 +156,9 @@ class Runnable(ABC):
                 self._current_loop_time = current_milli_cycle_time(self.__loop_cycle)
                 self._last_logic_start = current_milli_time()
 
+                self._pre_logic_update()
                 self._logic()
-
                 self._last_logic_end = current_milli_time()
-
                 self._post_logic_update()
         except Exception as e:
             self.report(e.__str__(), logging.fatal)
@@ -136,20 +170,18 @@ class Runnable(ABC):
             raise e
 
     def _before_start(self):
-        pass
+        sys.stdin = os.fdopen(self._std)
 
     @abstractmethod
     def _logic(self):
         pass
 
-    def _after_stop(self):
-        pass
-
-    def _before_stop(self):
-        pass
-
     def _post_logic_update(self):
         pass
+
+    def _pre_logic_update(self):
+        if self.__clear_scr:
+            os.system('clear')
 
     def get_loop_latency(self):
         return self._last_logic_start - self._last_loop_time - self.__loop_cycle
@@ -168,30 +200,32 @@ class Runnable(ABC):
 
         elif level == logging.DEBUG:
             self._logger.debug(name_msg)
-            self.__show_console("[DEBUG] " + "\033[1;31;40m {} \033[0m".format(msg))
+            self.__show_console(self._make_text("[DEBUG] " + msg, self.COLOR_CYAN))
 
         elif level == logging.INFO:
             self._logger.info(name_msg)
-            self.__show_console("[INFO] " + msg)
+            self.__show_console(self._make_text("[INFO] " + msg, self.COLOR_GREEN))
 
         elif level == logging.WARNING or level == logging.WARN:
             self._logger.warning(name_msg)
-            self.__show_console("[WARNING] " + msg)
+            self.__show_console(self._make_text("[WARNING] " + msg, self.COLOR_YELLOW))
 
         elif level == logging.ERROR:
             self._logger.error(name_msg)
-            self.__show_console("[ERROR] " + msg)
+            self.__show_console(self._make_text("[ERROR] " + msg, self.COLOR_RED))
 
         elif level == logging.FATAL or level == logging.CRITICAL:
             self._logger.fatal(name_msg)
-            self.__show_console("[FATAL] " + msg)
+            self.__show_console(self._make_text("[FATAL] " + msg, self.COLOR_RED))
 
     def __show_console(self, msg):
-        timestamp = '\033[35m' + datetime.now().strftime("%H:%M:%S") + '\033[0m'
-        name = '\033[96m' + self.name() + '\033[0m'
+        timestamp = self._make_text( datetime.now().strftime("%H:%M:%S"), self.COLOR_PURPLE)
+        name = self._make_text(self.name(), self.COLOR_CYAN)
         print('[{} - {}]\t{}'.format(name, timestamp, msg), flush=True)
 
-
+    @staticmethod
+    def _make_text(msg, color):
+        return color + msg + '\033[0m'
 
 class HIL(Runnable, Physics, ABC):
     @abstractmethod
@@ -258,19 +292,64 @@ class PLC(DcsComponent):
         self.port = plcs[plc_id]['port']
         self.protocol = plcs[plc_id]['protocol']
 
-        self.init_sensors()
-        self.init_actuators()
+        self.__init_sensors()
+        self.__init_actuators()
 
         self.server = ProtocolFactory.create_server(self.protocol, self.ip, self.port)
         self.report('creating the server on IP = {}:{}'.format(self.ip, self.port), logging.INFO)
 
+        self._snapshot_recorder = self.setup_logger("snapshots_" + self.name(), logging.Formatter('%(message)s'), file_ext=".csv")
+        self.__record_variables = False;
 
-    def init_sensors(self):
+    def set_record_variables(self, value):
+        self.__record_variables = value
+
+
+    def _post_logic_update(self):
+        DcsComponent._post_logic_update(self)
+        self._store_received_values()
+        if self.__record_variables:
+            self._record_variables()
+
+    def _store_received_values(self):
+        for tag_name, tag_data in self.tags.items():
+            if not self._is_local_tag(tag_name):
+                continue
+
+            if tag_data['type'] == 'output':
+                self._set(tag_name, self.server.get(tag_data['id']))
+            elif tag_data['type'] == 'input':
+                self.server.set(tag_data['id'], self._get(tag_name))
+
+    def _record_variables(self, header=False):
+        snapshot = ""
+
+        if header:
+            snapshot += "time, current_loop, loop_latency, logic_execution_time, "
+        else:
+            snapshot += "{}, {}, {}, {}, ".format(
+                datetime.now(),
+                self._current_loop_time,
+                self.get_loop_latency(),
+                self.get_logic_execution_time()
+            )
+
+        for tag_name, tag_data in self.tags.items():
+            if not self._is_local_tag(tag_name):
+                continue
+            if header:
+                snapshot += "{}({}), ".format(tag_name, tag_data['id'])
+            else:
+                snapshot += "{}, ".format(self._get(tag_name))
+
+        self._snapshot_recorder.info(snapshot)
+
+    def __init_sensors(self):
         for tag in self.tags:
             if self._is_input_tag(tag):
                 self._sensor_connector.add_sensor(tag, self._get_tag_fault(tag))
 
-    def init_actuators(self):
+    def __init_actuators(self):
         for tag in self.tags:
             if self._is_output_tag(tag):
                 self._actuator_connector.add_actuator(tag)
@@ -296,16 +375,6 @@ class PLC(DcsComponent):
         else:
             self._send(tag, value)
 
-    def _post_logic_update(self):
-        for tag_name, tag_data in self.tags.items():
-            if not self._is_local_tag(tag_name):
-                continue
-
-            if tag_data['type'] == 'output':
-                self._set(tag_name, self.server.get(tag_data['id']))
-            elif tag_data['type'] == 'input':
-
-                self.server.set(tag_data['id'], self._get(tag_name))
 
     def _is_local_tag(self, tag):
         return self.tags[tag]['plc'] == self.id
@@ -315,6 +384,7 @@ class PLC(DcsComponent):
         for tag, value in self.tags.items():
             if self._is_output_tag(tag) and self._is_local_tag(tag):
                 self._set(tag, value['default'])
+        self._record_variables(True)
 
     def stop(self):
         self.server.stop()
@@ -334,27 +404,14 @@ class PLC(DcsComponent):
 
 
 class HMI(DcsComponent):
-    COLOR_RED = '\033[91m'
-    COLOR_GREEN = '\033[92m'
-    COLOR_BLUE = '\033[94m'
-    COLOR_CYAN = '\033[96m'
-    COLOR_YELLOW = '\033[93m'
-    COLOR_BOLD = '\033[1m'
-
     def __init__(self, name,  tags, plcs, loop=SpeedConfig.DEFAULT_PLC_PERIOD_MS):
         DcsComponent.__init__(self, name, tags, plcs, loop)
-        self.__clear_scr = True
-
-    @staticmethod
-    def _make_text(msg, color):
-        return color + msg + '\033[0m'
 
     def _before_start(self):
-        sys.stdin = os.fdopen(self._std)
+        DcsComponent._before_start(self)
+        self._set_clear_scr(True)
 
     def _logic(self):
-        if self.__clear_scr:
-            os.system('clear')
         self._display()
         self._operate()
 
@@ -364,8 +421,7 @@ class HMI(DcsComponent):
     def _operate(self):
         pass
 
-    def _set_clear_scr(self, value):
-        self.__clear_scr = value
+
 
 
 

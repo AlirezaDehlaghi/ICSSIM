@@ -104,6 +104,7 @@ class MemcacheConnector(Connector):
         self._value = 'value'
         self.memcached_client = memcache.Client([self._path], debug=0)
 
+
     def initialize(self, values, clear_old=False):
         if clear_old:
             os.system('/etc/init.d/memcached restart')

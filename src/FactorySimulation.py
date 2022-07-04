@@ -1,6 +1,4 @@
 import logging
-from ics_sim.helper import debug
-import os
 
 from ics_sim.Device import HIL
 from Configs import TAG, PHYSICS, Connection
@@ -10,7 +8,6 @@ class FactorySimulation(HIL):
     def __init__(self):
         super().__init__('Factory', Connection.CONNECTION, 100)
         self.init()
-
 
     def _logic(self):
         elapsed_time = self._current_loop_time - self._last_loop_time
@@ -27,10 +24,10 @@ class FactorySimulation(HIL):
 
         if tank_water_level > PHYSICS.TANK_MAX_LEVEL:
             tank_water_level = PHYSICS.TANK_MAX_LEVEL
-            self.report('tank water overflowed', logging.INFO)
+            self.report('tank water overflowed', logging.WARNING)
         elif tank_water_level <= 0:
             tank_water_level = 0
-            self.report('tank water is empty', logging.INFO)
+            self.report('tank water is empty', logging.WARNING)
 
         # update tank water flow
         tank_water_flow = 0
@@ -41,7 +38,7 @@ class FactorySimulation(HIL):
         if self._get(TAG.TAG_BOTTLE_DISTANCE_TO_FILLER_VALUE) > 1:
             bottle_water_amount = 0
             if self._get(TAG.TAG_TANK_OUTPUT_FLOW_VALUE):
-                self.report('water is wasting', logging.INFO)
+                self.report('water is wasting', logging.WARNING)
         else:
             bottle_water_amount = self._get(TAG.TAG_BOTTLE_LEVEL_VALUE) * PHYSICS.BOTTLE_LEVEL_CAPACITY
             bottle_water_amount += self._get(TAG.TAG_TANK_OUTPUT_FLOW_VALUE) * elapsed_time
@@ -50,7 +47,7 @@ class FactorySimulation(HIL):
 
         if bottle_water_level > PHYSICS.BOTTLE_MAX_LEVEL:
             bottle_water_level = PHYSICS.BOTTLE_MAX_LEVEL
-            self.report('bottle water overflowed', logging.INFO)
+            self.report('bottle water overflowed', logging.WARNING)
 
         # update bottle position
         bottle_distance_to_filler = self._get(TAG.TAG_BOTTLE_DISTANCE_TO_FILLER_VALUE)

@@ -32,6 +32,6 @@ sudo docker-compose up -d
 printStep 'DOCKER_COMPOSE UP'
 sudo docker-compose ps
 
-
+sudo tcpdump -w traffic.pcap -i br_icsnet
 
 
