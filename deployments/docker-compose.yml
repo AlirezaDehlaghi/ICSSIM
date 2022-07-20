@@ -98,7 +98,7 @@ services:
         
         
   attacker:
-    build: ics-docker/.
+    build: attacker-docker/.
     stdin_open: true # docker run -i
     tty: true 
     privileged: true
@@ -113,7 +113,7 @@ services:
       
     networks:
       wnet:
-        ipv4_address: 192.168.0.41
+        ipv4_address: 192.168.0.43
         
   attacker2:
     build: attacker-docker/.

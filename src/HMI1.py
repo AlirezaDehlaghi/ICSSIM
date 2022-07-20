@@ -33,8 +33,11 @@ class HMI1(HMI):
         self._latency = 0
 
     def _display(self):
-        self.__update_massages()
+
         self.__show_table()
+
+    def _operate(self):
+        self.__update_massages()
 
     def __update_massages(self):
         self._latency = 0
@@ -82,7 +85,8 @@ class HMI1(HMI):
             elif value == 3:
                 value = self._make_text('Auto'.center(self.msg1_length, " "), self.COLOR_GREEN)
             else:
-                value = self._make_text(value.center(self.msg1_length, " "), self.COLOR_RED)
+
+                value = self._make_text(str(value).center(self.msg1_length, " "), self.COLOR_RED)
 
         elif tag_attribute == 'status' or self.tags[tag]['id'] == 7:
             if value == 'NULL':

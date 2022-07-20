@@ -9,7 +9,8 @@ RUN apt-get update
 
 RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
 
-RUN apt-get install -y sudo \
+RUN apt-get update \
+&& apt-get install -y sudo \
 && apt-get install -y python3 \
 && apt-get install -y iputils-ping \
 && apt-get install -y net-tools \
@@ -21,7 +22,8 @@ RUN apt-get install -y sudo \
 && apt-get install -y memcached \
 && apt-get install -y python3-memcache \ 
 && apt-get install -y ettercap-common \
-&& apt-get install -y nmap
+&& apt-get install -y nmap \
+&& apt-get install -y python3-scapy
 
 WORKDIR /src
 

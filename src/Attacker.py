@@ -27,29 +27,42 @@ class Attacker(Runnable):
             file_ext='.csv'
         )
 
-        self.__attack_list = ['scan-ettercap', 'scan-ping', 'scan-nmap', 'mitm', 'ddos']
+        self.__attack_list = ['scan-ettercap',
+                              'scan-ping',
+                              'scan-nmap',
+                              'scan-scapy',
+                              'mitm-scapy',
+                              'mitm-ettercap',
+                              'ddos',
+                              'replay-scapy']
 
         pass
 
-    def __get_menu_line(self, number, text):
-        return '{} To apply the {} attack press {} \n'.format(
+    def __get_menu_line(self, template, number, text):
+        return template.format(
             self._make_text(str(number)+')', self.COLOR_BLUE),
-            self._make_text(text, self.COLOR_GREEN),
+            self._make_text(text, self.COLOR_YELLOW),
             self._make_text(str(number), self.COLOR_BLUE)
         )
 
     def _logic(self):
         menu = "\n"
+        menu += self.__get_menu_line('{} to {} press {} \n', 0, 'clear')
         for i in range(len(self.__attack_list)):
-            menu += self.__get_menu_line(i + 1, self.__attack_list[i])
+            menu += self.__get_menu_line('{} To apply the {} attack press {} \n', i + 1, self.__attack_list[i])
         self.report(menu)
 
         try:
             attack_name = int(input('your choice (1 to {}): '.format(len(self.__attack_list))))
+
+            if int(attack_name) == 0:
+                os.system('clear')
+                return
+
             if 0 < attack_name <= len(self.__attack_list):
                 attack_name = self.__attack_list[attack_name-1]
 
-            attack_path = os.path.join(self.__attack_path, attack_name + ".sh")
+            attack_path = os.path.join(self.__attack_path, str(attack_name) + ".sh")
             if not os.path.isfile(attack_path):
                 raise ValueError('command {} does not exist'.format(attack_path))
 

@@ -75,13 +75,13 @@ class Controllers:
                 'name': 'PLC1',
                 'ip': '192.168.0.11',
                 'port': 502,
-                'protocol': 'Modbus-TCP'
+                'protocol': 'ModbusWriteRequest-TCP'
              },
             2: {
                 'name': 'PLC2',
                 'ip': '192.168.0.12',
                 'port': 502,
-                'protocol': 'Modbus-TCP'
+                'protocol': 'ModbusWriteRequest-TCP'
              },
         },
         SimulationConfig.EXECUTION_MODE_GNS3: {
@@ -89,13 +89,13 @@ class Controllers:
                 'name': 'PLC1',
                 'ip': '192.168.0.11',
                 'port': 502,
-                'protocol': 'Modbus-TCP'
+                'protocol': 'ModbusWriteRequest-TCP'
             },
             2: {
                 'name': 'PLC2',
                 'ip': '192.168.0.12',
                 'port': 502,
-                'protocol': 'Modbus-TCP'
+                'protocol': 'ModbusWriteRequest-TCP'
             },
         },
         SimulationConfig.EXECUTION_MODE_LOCAL: {
@@ -103,13 +103,13 @@ class Controllers:
                 'name': 'PLC1',
                 'ip': '127.0.0.1',
                 'port': 5502,
-                'protocol': 'Modbus-TCP'
+                'protocol': 'ModbusWriteRequest-TCP'
              },
             2: {
                 'name': 'PLC2',
                 'ip': '127.0.0.1',
                 'port': 5503,
-                'protocol': 'Modbus-TCP'
+                'protocol': 'ModbusWriteRequest-TCP'
              },
         }
     }

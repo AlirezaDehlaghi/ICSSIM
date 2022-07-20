@@ -9,8 +9,9 @@ RUN apt-get update
 
 RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
 
-RUN apt-get install -y sudo \
-&& apt-get install -y python3.8 \
+RUN apt-get update \
+&& apt-get install -y sudo \
+&& apt-get install -y python3 \
 && apt-get install -y iputils-ping \
 && apt-get install -y net-tools \
 && apt-get install -y git \

@@ -1,0 +1,5 @@
+# Sniffed 4 packets in the network 192.168.0.1/24:
+sip:192.168.0.22 dip192.168.0.11 port:502 command:16 address:6 value:4.0 time:1658328175.95526
+sip:192.168.0.22 dip192.168.0.11 port:502 command:16 address:6 value:5.0 time:1658328178.601514
+sip:192.168.0.22 dip192.168.0.11 port:502 command:16 address:6 value:6.0 time:1658328181.531248
+sip:192.168.0.22 dip192.168.0.11 port:502 command:16 address:6 value:3.0 time:1658328185.175037

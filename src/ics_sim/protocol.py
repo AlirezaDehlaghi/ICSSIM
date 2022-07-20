@@ -122,17 +122,18 @@ class ServerModbus(Server, ModbusBase):
         #return self.decode(DataBank.get_words(self.get_registers(tag_id), self._word_num))
 
 
+
 class ProtocolFactory:
     @staticmethod
     def create_client(protocol, ip, port):
-        if protocol == 'Modbus-TCP':
+        if protocol == 'ModbusWriteRequest-TCP':
             return ClientModbus(ip, port)
         else:
             raise TypeError()
 
     @staticmethod
     def create_server(protocol, ip, port):
-        if protocol == 'Modbus-TCP':
+        if protocol == 'ModbusWriteRequest-TCP':
             return ServerModbus(ip, port)
         else:
             raise TypeError()
