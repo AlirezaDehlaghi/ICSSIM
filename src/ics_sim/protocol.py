@@ -1,6 +1,5 @@
 from pyModbusTCP.client import ModbusClient
 from pyModbusTCP.server import ModbusServer, DataBank
-from ics_sim.helper import debug
 
 
 class Client:

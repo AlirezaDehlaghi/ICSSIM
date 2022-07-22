@@ -113,7 +113,7 @@ services:
       
     networks:
       wnet:
-        ipv4_address: 192.168.0.43
+        ipv4_address: 192.168.0.41
         
   attacker2:
     build: attacker-docker/.

@@ -62,7 +62,9 @@ class Attacker(Runnable):
             if 0 < attack_name <= len(self.__attack_list):
                 attack_name = self.__attack_list[attack_name-1]
 
+
             attack_path = os.path.join(self.__attack_path, str(attack_name) + ".sh")
+            print(os.path.isfile(attack_path))
             if not os.path.isfile(attack_path):
                 raise ValueError('command {} does not exist'.format(attack_path))
 
