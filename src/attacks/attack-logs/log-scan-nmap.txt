@@ -1,51 +1,51 @@
-# Nmap 7.92 scan initiated Fri Jul 22 16:20:23 2022 as: nmap -p- -oN ./attacks/attack-logs/log-scan-nmap.txt 192.168.0.1-255
+# Nmap 7.92 scan initiated Mon Aug  1 23:01:22 2022 as: nmap -p- -oN ./attacks/attack-logs/log-scan-nmap.txt 192.168.0.1-255
 Nmap scan report for dlinkrouter (192.168.0.1)
-Host is up (0.0000070s latency).
+Host is up (0.000062s latency).
 All 65535 scanned ports on dlinkrouter (192.168.0.1) are in ignored states.
 Not shown: 65535 closed tcp ports (reset)
-MAC Address: 02:42:56:78:E7:D6 (Unknown)
+MAC Address: 02:42:BB:CF:D4:87 (Unknown)
 
 Nmap scan report for plc1.icsnet (192.168.0.11)
-Host is up (0.000013s latency).
+Host is up (0.000081s latency).
 Not shown: 65534 closed tcp ports (reset)
 PORT    STATE SERVICE
 502/tcp open  mbap
 MAC Address: 02:42:C0:A8:00:0B (Unknown)
 
 Nmap scan report for plc2.icsnet (192.168.0.12)
-Host is up (0.000013s latency).
+Host is up (0.000068s latency).
 Not shown: 65534 closed tcp ports (reset)
 PORT    STATE SERVICE
 502/tcp open  mbap
 MAC Address: 02:42:C0:A8:00:0C (Unknown)
 
 Nmap scan report for hmi1.icsnet (192.168.0.21)
-Host is up (0.000012s latency).
+Host is up (0.00012s latency).
 All 65535 scanned ports on hmi1.icsnet (192.168.0.21) are in ignored states.
 Not shown: 65535 closed tcp ports (reset)
 MAC Address: 02:42:C0:A8:00:15 (Unknown)
 
 Nmap scan report for hmi2.icsnet (192.168.0.22)
-Host is up (0.000019s latency).
+Host is up (0.000049s latency).
 All 65535 scanned ports on hmi2.icsnet (192.168.0.22) are in ignored states.
 Not shown: 65535 closed tcp ports (reset)
 MAC Address: 02:42:C0:A8:00:16 (Unknown)
 
 Nmap scan report for hmi3.icsnet (192.168.0.23)
-Host is up (0.000021s latency).
+Host is up (0.000060s latency).
 All 65535 scanned ports on hmi3.icsnet (192.168.0.23) are in ignored states.
 Not shown: 65535 closed tcp ports (reset)
 MAC Address: 02:42:C0:A8:00:17 (Unknown)
 
 Nmap scan report for attacker2.icsnet (192.168.0.42)
-Host is up (0.000018s latency).
+Host is up (0.000033s latency).
 All 65535 scanned ports on attacker2.icsnet (192.168.0.42) are in ignored states.
 Not shown: 65535 closed tcp ports (reset)
 MAC Address: 02:42:C0:A8:00:2A (Unknown)
 
-Nmap scan report for 28cb66f0eb79 (192.168.0.41)
-Host is up (0.0000050s latency).
-All 65535 scanned ports on 28cb66f0eb79 (192.168.0.41) are in ignored states.
+Nmap scan report for a156df83060e (192.168.0.41)
+Host is up (0.000011s latency).
+All 65535 scanned ports on a156df83060e (192.168.0.41) are in ignored states.
 Not shown: 65535 closed tcp ports (reset)
 
-# Nmap done at Fri Jul 22 16:20:37 2022 -- 255 IP addresses (8 hosts up) scanned in 14.37 seconds
+# Nmap done at Mon Aug  1 23:02:12 2022 -- 255 IP addresses (8 hosts up) scanned in 49.97 seconds

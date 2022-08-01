@@ -5,6 +5,11 @@ import sys
 from datetime import datetime
 from time import sleep
 
+from scapy.arch import get_if_addr
+from scapy.config import conf
+from scapy.layers.inet import IP
+from scapy.layers.l2 import ARP, Ether
+
 from ics_sim.Device import Runnable, HMI
 
 
@@ -17,6 +22,9 @@ class Attacker(Runnable):
         self.__attack_path = './attacks'
         self.__log_path = os.path.join(self.__attack_path,'attack-logs')
 
+        self.MAC = Ether().src
+        self.IP = get_if_addr(conf.iface)
+
         if not os.path.exists(self.__log_path):
             os.makedirs(self.__log_path)
 
@@ -26,6 +34,16 @@ class Attacker(Runnable):
             file_dir= self.__log_path,
             file_ext='.csv'
         )
+
+        self.__log_attack_summary.info("{},{},{},{},{},{},{}".format("Attack",
+                                                               "startStamp",
+                                                               "endStamp",
+                                        sudo                       "startTime",
+                                                               "endTime",
+                                                               "attackerMAC",
+                                                               "attackerIP",
+                                                               )
+                                       )
 
         self.__attack_list = ['scan-ettercap',
                               'scan-ping',
@@ -74,7 +92,18 @@ class Attacker(Runnable):
             subprocess.run([attack_path, self.__log_path, log_file])
             end_time = datetime.now()
 
-            self.__log_attack_summary.info("{},{},{}\n".format(attack_name, start_time, end_time))
+            self.__log_attack_summary.info("{},{},{},{},{},{},{}".format(attack_name,
+                                                                         start_time.timestamp(),
+                                                                         end_time.timestamp(),
+                                                                         start_time,
+                                                                         end_time,
+                                                                         self.MAC,
+                                                                         self.IP,
+                                                                   )
+                                           )
+
+
+
 
         except ValueError as e:
             self.report(e.__str__())
