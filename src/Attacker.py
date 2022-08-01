@@ -38,7 +38,7 @@ class Attacker(Runnable):
         self.__log_attack_summary.info("{},{},{},{},{},{},{}".format("Attack",
                                                                "startStamp",
                                                                "endStamp",
-                                        sudo                       "startTime",
+                                                               "startTime",
                                                                "endTime",
                                                                "attackerMAC",
                                                                "attackerIP",
