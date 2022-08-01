@@ -1,3 +1,1 @@
-Attack,startStamp,endStamp,attackerMAC,attackerIP
-scan-ettercap,1659387608.560321,1659387614.073667,02:42:c0:a8:00:29,192.168.0.41
-scan-nmap,1659387682.063776,1659387732.277754,02:42:c0:a8:00:29,192.168.0.41
+Attack,startStamp,endStamp,startTime,endTime,attackerMAC,attackerIP
