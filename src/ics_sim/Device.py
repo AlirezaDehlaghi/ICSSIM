@@ -190,7 +190,7 @@ class Runnable(ABC):
         return self._current_loop_time - self._start_time
 
     def get_logic_execution_time(self):
-        return self._last_logic_end - self._last_logic_end
+        return self._last_logic_end - self._last_logic_start 
 
     def report(self, msg, level=logging.NOTSET):
         name_msg = "[{}] {}".format(self.name(), msg)

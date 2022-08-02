@@ -17,27 +17,30 @@ class DDosAgent(HMI):
         super().__init__(name, TAG.TAG_LIST, Controllers.PLCs, 1)
         self.__counter = 0
         self.__target = random.choice(list(TAG.TAG_LIST.keys()))
+        self.chunk = 10
 
 
     def _before_start(self):
         self._set_clear_scr(False)
+        sleep(5)
 
     def _logic(self):
+
         try:
-            for i in range(10):
+            for i in range(self.chunk):
                 value = self._receive(self.__target)
-            self.__counter += 10
+            self.__counter += self.chunk
 
         except Exception as e:
             self.report('get exception on read request {}'.format(self.name(), self.__counter), logging.INFO)
 
     def _post_logic_update(self):
-        latency = self.get_logic_execution_time()
+        latency = self.get_logic_execution_time() / self.chunk
         if latency > DDosAgent.max:
             DDosAgent.max = latency
-            self.report('Max seen latency reached to {}'.format(DDosAgent.max), logging.INFO)
-        if self.__counter % 1000 == 0:
-            self.report('sent {} read request for {}'.format(self.name(), self.__counter, self.__target), logging.INFO)
+            #self.report('Max seen latency reached to {}'.format(DDosAgent.max), logging.INFO)
+        if self.__counter % 1000 < self.chunk:
+            self.report('{} sent {} read request for {} '.format(self.name(), self.__counter, self.__target, ), logging.INFO)
 
     def _initialize_logger(self):
         if self.is_first:
@@ -53,7 +56,7 @@ class DDosAgent(HMI):
             self._logger = logging.getLogger('log-ddos')
 
     def _before_stop(self):
-        self.report("sent {} massages before stop".format(self.__counter))
+        self.report("sent {} massages before stop max latency is {}".format(self.__counter, DDosAgent.max))
 
 
 if __name__ == '__main__':
