@@ -19,7 +19,7 @@ then
 
 fi
 
-if [ $1 = "PLC1.py" ] || [ $1 = "PLC2.py" ] || [ $1 = "HMI1.py" ] || [ $1 = "HMI2.py" ] || [ $1 = "HMI3.py" ] || [ $1 = "FactorySimulation.py" ] || [ $1 = "Attacker.py" ]
+if [ $1 = "PLC1.py" ] || [ $1 = "PLC2.py" ] || [ $1 = "HMI1.py" ] || [ $1 = "HMI2.py" ] || [ $1 = "HMI3.py" ] || [ $1 = "FactorySimulation.py" ] || [ $1 = "Attacker.py" ] || [ $1 = "AttackerMachine.py" ]
 then 
 	python3 $1
 else

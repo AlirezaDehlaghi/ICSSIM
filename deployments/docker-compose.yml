@@ -113,7 +113,7 @@ services:
       
     networks:
       wnet:
-        ipv4_address: 192.168.0.41
+        ipv4_address: 192.168.0.42
         
   attacker2:
     build: attacker-docker/.
@@ -122,15 +122,15 @@ services:
     privileged: true
     tty: true
     working_dir: /src
-    entrypoint: ["./start.sh", "Attacker.py"]
-    container_name: attacker2
+    entrypoint: ["./start.sh", "AttackerMachine.py"]
+    container_name: attacker-machine
     volumes:
       - ../src:/src
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
     networks:
       wnet:
-        ipv4_address: 192.168.0.42
+        ipv4_address: 192.168.0.41
 
       
 networks:

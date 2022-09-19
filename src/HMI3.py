@@ -27,7 +27,7 @@ class HMI3(HMI):
                 continue
 
     def _display(self):
-        n = random.randint(15, 16)
+        n = random.randint(5, 20)
         print("Sleep for {} seconds \n".format(n))
         time.sleep(n)
 

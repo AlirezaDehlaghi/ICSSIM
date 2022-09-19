@@ -2,7 +2,7 @@ import logging
 import os
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import sleep
 
 from scapy.arch import get_if_addr
@@ -29,30 +29,33 @@ class Attacker(Runnable):
             os.makedirs(self.__log_path)
 
         self.__log_attack_summary = self.setup_logger(
-            "log_summary",
+            "attacker_summary",
             logging.Formatter('%(message)s'),
             file_dir= self.__log_path,
             file_ext='.csv'
         )
 
-        self.__log_attack_summary.info("{},{},{},{},{},{},{}".format("Attack",
+        self.__log_attack_summary.info("{},{},{},{},{},{},{},{}".format("attack",
                                                                "startStamp",
                                                                "endStamp",
                                                                "startTime",
                                                                "endTime",
                                                                "attackerMAC",
                                                                "attackerIP",
+                                                               "description"
                                                                )
                                        )
 
-        self.__attack_list = ['scan-ettercap',
-                              'scan-ping',
-                              'scan-nmap',
-                              'scan-scapy',
-                              'mitm-scapy',
-                              'mitm-ettercap',
-                              'ddos',
-                              'replay-scapy']
+        self.__attack_list = {'scan-ettercap': 'ip-scan',
+                              'scan-ping': 'ip-scan',
+                              'scan-nmap': 'port-scan',
+                              'scan-scapy': 'ip-scan',
+                              'mitm-scapy': 'mitm',
+                              'mitm-ettercap': 'mitm',
+                              'ddos': 'ddos',
+                              'replay-scapy': 'replay'}
+
+        self.__attack_cnt = len(self.__attack_list)
 
         pass
 
@@ -66,23 +69,26 @@ class Attacker(Runnable):
     def _logic(self):
         menu = "\n"
         menu += self.__get_menu_line('{} to {} press {} \n', 0, 'clear')
-        for i in range(len(self.__attack_list)):
-            menu += self.__get_menu_line('{} To apply the {} attack press {} \n', i + 1, self.__attack_list[i])
+        i = 0
+        for attack in self.__attack_list.keys():
+            i += 1
+            menu += self.__get_menu_line('{} To apply the {} attack press {} \n', i , attack)
         self.report(menu)
 
         try:
-            attack_name = int(input('your choice (1 to {}): '.format(len(self.__attack_list))))
+            attack_name = int(input('your choice (1 to {}): '.format(self.__attack_cnt)))
 
             if int(attack_name) == 0:
                 os.system('clear')
                 return
 
-            if 0 < attack_name <= len(self.__attack_list):
-                attack_name = self.__attack_list[attack_name-1]
+            if 0 < attack_name <= self.__attack_cnt:
+                attack_name = list(self.__attack_list.keys())[attack_name-1]
+                attack_short_name = self.__attack_list[attack_name]
 
 
             attack_path = os.path.join(self.__attack_path, str(attack_name) + ".sh")
-            print(os.path.isfile(attack_path))
+
             if not os.path.isfile(attack_path):
                 raise ValueError('command {} does not exist'.format(attack_path))
 
@@ -92,13 +98,17 @@ class Attacker(Runnable):
             subprocess.run([attack_path, self.__log_path, log_file])
             end_time = datetime.now()
 
-            self.__log_attack_summary.info("{},{},{},{},{},{},{}".format(attack_name,
+            if attack_name == 'ddos':
+                start_time = start_time + timedelta(seconds=5)
+
+            self.__log_attack_summary.info("{},{},{},{},{},{},{},{}".format(attack_short_name,
                                                                          start_time.timestamp(),
                                                                          end_time.timestamp(),
                                                                          start_time,
                                                                          end_time,
                                                                          self.MAC,
                                                                          self.IP,
+                                                                         attack_name,
                                                                    )
                                            )
 
