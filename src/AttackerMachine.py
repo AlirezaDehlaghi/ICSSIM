@@ -58,12 +58,12 @@ class AttackerMachine(Runnable):
         self.__attack_scenario = []
         self.__attack_scenario += ['scan-ettercap'] * 0  # this should be 0, cannot automate
         self.__attack_scenario += ['scan-ping'] * 0
-        self.__attack_scenario += ['scan-nmap'] * 18
-        self.__attack_scenario += ['scan-scapy'] * 24
-        self.__attack_scenario += ['mitm-scapy'] * 16
+        self.__attack_scenario += ['scan-nmap'] * 16
+        self.__attack_scenario += ['scan-scapy'] * 21
+        self.__attack_scenario += ['mitm-scapy'] * 14
         self.__attack_scenario += ['mitm-ettercap'] * 0
-        self.__attack_scenario += ['ddos'] * 8
-        self.__attack_scenario += ['replay-scapy'] * 8
+        self.__attack_scenario += ['ddos'] * 7
+        self.__attack_scenario += ['replay-scapy'] * 7
 
         random.shuffle(self.__attack_scenario)
 
@@ -117,8 +117,8 @@ class AttackerMachine(Runnable):
                     text = '{}: applied {} times'.format(attack, self.__status_board[attack])
                     self.report(self._make_text(text, self.COLOR_GREEN))
 
-                self.report('waiting 30 seconds')
-                sleep(30)
+                self.report('waiting 40 seconds')
+                sleep(40)
 
             except ValueError as e:
                 self.report(e.__str__())

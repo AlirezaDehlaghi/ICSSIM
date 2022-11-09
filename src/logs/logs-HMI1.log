@@ -1,0 +1,5 @@
+2022-09-20 14:56:11,727 INFO [HMI1] Created
+2022-09-20 14:56:11,780 INFO [HMI1] started
+2022-09-20 15:56:08,076 WARNING [HMI1] object of type 'NoneType' has no len()
+2022-09-20 15:56:51,818 WARNING [HMI1] object of type 'NoneType' has no len()
+2022-09-20 15:57:43,629 WARNING [HMI1] object of type 'NoneType' has no len()
