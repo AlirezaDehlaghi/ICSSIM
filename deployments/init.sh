@@ -13,8 +13,8 @@ printStep "DOWN PREVIOUS CONTAINERS"
 sudo docker-compose down 
 
 printStep "CTEATE TEMP SRC FILE"
-mkdir ./ics-docker/src/ 
-mkdir ./attacker-docker/src/ 
+sudo mkdir ./ics-docker/src/ 
+sudo mkdir ./attacker-docker/src/ 
 
 printStep "PRUNING DOCKER"
 sudo docker system prune -f
@@ -23,8 +23,8 @@ printStep 'DOCKER_COMPOSE BUILD'
 sudo docker-compose build
 
 printStep "REMOVE TEMP SRC FILE"
-rm -r ./ics-docker/src/ 
-rm -r ./attacker-docker/src/ 
+sudo rm -r ./ics-docker/src/ 
+sudo rm -r ./attacker-docker/src/ 
 
 printStep 'DOCKER_COMPOSE UP'
 sudo docker-compose up -d
