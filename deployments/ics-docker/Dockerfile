@@ -16,9 +16,9 @@ RUN apt-get update \
 && apt-get install -y net-tools \
 && apt-get install -y git \
 && apt-get -y install nano \
-&& apt --yes install python3-pip \	
+&& apt-get install -y install python3-pip \	
 && pip install pyModbusTCP \
-&& apt install telnet \
+&& apt-get install -y install telnet \
 && apt-get install -y memcached \
 && apt-get install -y python3-memcache \ 
 && apt-get install -y ettercap-common \

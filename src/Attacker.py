@@ -53,7 +53,8 @@ class Attacker(Runnable):
                               'mitm-scapy': 'mitm',
                               'mitm-ettercap': 'mitm',
                               'ddos': 'ddos',
-                              'replay-scapy': 'replay'}
+                              'replay-scapy': 'replay',
+                              'command-injection':'command-injection'}
 
         self.__attack_cnt = len(self.__attack_list)
 

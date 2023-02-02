@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from protocol import ClientModbus
 
 
@@ -7,15 +9,15 @@ class ModbusCommand:
     command_write_multiple_registers = 16
     command_read_holding_registers = 3
 
-    def __init__(self, sip, dip, port, command, address, value, new_value, time, word_num=2):
+    def __init__(self, sip, dip, port, command, tag, value, new_value, word_num=2):
         self.sip = sip
         self.dip = dip
         self.port = port
         self.command = command
-        self.address = address
-        self.tag = int(address / word_num)
+        self.tag = int(tag)
+        self.address = tag * word_num
         self.value = value
-        self.time = time
+        self.time = datetime.now().timestamp()
         self.new_value = new_value
 
     def __str__(self):

