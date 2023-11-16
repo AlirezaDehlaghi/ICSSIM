@@ -2,8 +2,9 @@
 
 ## Subsection
 
-Exciting documentation in here.
-Let's make a list (empty surrounding lines required):
+(Under Construction)
+
+Exciting documentation for ICSSIM will be  here.
 
 - item 1
 
