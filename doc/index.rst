@@ -10,5 +10,5 @@ Welcome to ICSSIM's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   some-feature.md
-   another-feature.md
+   readme-copy.md
+   api.md
