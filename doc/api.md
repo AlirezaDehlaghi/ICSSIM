@@ -1,5 +1,4 @@
 # API reference
-
 ## HMI1
 
 ```{eval-rst}
@@ -10,24 +9,7 @@
    :show-inheritance:
 ```
 
-## HMI1
 
-```{eval-rst}
-.. autoclass:: HMI1
-   :members:
-
-```
-
-
-## Sample Class
-
-```{eval-rst}
-.. autoclass:: sampleclass
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-```
 
 ## Example 7
 ```{eval-rst}
