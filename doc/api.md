@@ -3,7 +3,7 @@
 ## Sample Class
 
 ```{eval-rst}
-.. autoclass:: sampleclass
+.. autoclass:: sampleclass.sampleclass
    :members:
    :undoc-members:
    :show-inheritance:
