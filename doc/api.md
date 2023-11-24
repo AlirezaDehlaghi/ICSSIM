@@ -24,6 +24,8 @@
 ```{eval-rst}
 .. autoclass:: sampleclass
    :members:
+   :undoc-members:
+   :show-inheritance:
 
 ```
 
