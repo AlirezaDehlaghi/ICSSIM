@@ -32,7 +32,13 @@ class HMI1(HMI):
 
         self._latency = 0
 
+    def testfunc(self):
+        """
+        this function do notting. just to test documentation
+        """
+        return ""
     def _display(self):
+
 
         self.__show_table()
 

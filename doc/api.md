@@ -20,7 +20,7 @@
    :show-inheritance:
 ```
 
-## Example 4
+## Example 5
 ```{eval-rst}
 .. automodule:: example
    :imported-members:
