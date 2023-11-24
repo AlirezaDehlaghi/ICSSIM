@@ -18,6 +18,15 @@
 
 ```
 
+
+## Sample Class
+
+```{eval-rst}
+.. autoclass:: sampleclass
+   :members:
+
+```
+
 ## Example 6
 ```{eval-rst}
 .. automodule:: example
