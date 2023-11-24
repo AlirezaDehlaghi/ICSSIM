@@ -27,7 +27,7 @@
 
 ```
 
-## Example 6
+## Example 7
 ```{eval-rst}
 .. automodule:: example
    :imported-members:

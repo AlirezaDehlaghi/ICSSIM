@@ -3,4 +3,9 @@ class sampleclass:
         """
         this function do notting. just to test documentation
         """
-        return ""
+        return "temp"
+    def other_testfunc(cls):
+        """
+        this function do notting. just to test documentation
+        """
+        return "temp"
