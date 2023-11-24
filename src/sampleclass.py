@@ -1,7 +1,9 @@
 class sampleclass:
     def testfunc(self):
         """
-        this function do notting. just to test documentation
+        it print every thing
+
+        :return: The product of a and b.
         """
         return "temp"
     def other_testfunc(cls):
