@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Example'
-copyright = 'workshop participant'
-author = 'workshop participant'
+project = 'ICSSIM'
+copyright = 'Alireza Dehlaghi Ghadim'
+author = 'Alireza Dehlaghi Ghadim'
 release = '0.1'
 
 
