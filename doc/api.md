@@ -1,5 +1,32 @@
 # API reference
 
+## Runnable
+
+```{eval-rst}
+.. autoclass:: ics_sim.Device.Runnable
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+## DcsComponent
+
+```{eval-rst}
+.. autoclass:: ics_sim.Device.DcsComponent
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+## HMI
+
+```{eval-rst}
+.. autoclass:: ics_sim.Device.HMI
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
 ## HMI1
 
 ```{eval-rst}
@@ -12,7 +39,7 @@
 ## Sample Class
 
 ```{eval-rst}
-.. autoclass:: sampleclass.sampleclass
+.. automodule:: sampleclass.sampleclass
    :members:
    :undoc-members:
    :show-inheritance:
