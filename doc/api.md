@@ -1,6 +1,6 @@
 # API reference
 
-## Sample Class
+## HMI1
 
 ```{eval-rst}
 .. autoclass:: HMI1.HMI1
