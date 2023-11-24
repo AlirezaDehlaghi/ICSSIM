@@ -3,7 +3,7 @@
 ## HMI1
 
 ```{eval-rst}
-.. automodule:: HMI1
+.. autoclass:: HMI1
    :imported-members:
    :members:
    :undoc-members:
