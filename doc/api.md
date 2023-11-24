@@ -1,15 +1,13 @@
 # API reference
-## HMI1
+
+## Sample Class
 
 ```{eval-rst}
-.. autoclass:: HMI1
-   :imported-members:
+.. autoclass:: sampleclass
    :members:
    :undoc-members:
    :show-inheritance:
 ```
-
-
 
 ## Example 7
 ```{eval-rst}
