@@ -1,3 +1,6 @@
+'''
+here  is a sample class
+'''
 class sampleclass:
     def testfunc(self):
         """
