@@ -7,7 +7,7 @@ Welcome to ICSSIM's documentation!
 ===================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
    readme-copy.md
