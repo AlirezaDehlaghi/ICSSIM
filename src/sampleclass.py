@@ -1,4 +1,7 @@
-class sampleclass():
+from src.ics_sim.Device import HMI
+
+
+class sampleclass(HMI):
     """this is another sample"""
     def Testfunc(self):
         """
