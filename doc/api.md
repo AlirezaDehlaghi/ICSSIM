@@ -20,3 +20,12 @@
    :show-inheritance:
 ```
 
+## Example
+```{eval-rst}
+.. automodule:: example
+   :imported-members:
+   :members:
+   :undoc-members:
+   :show-inheritance:
+```
+
