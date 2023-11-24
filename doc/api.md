@@ -10,17 +10,15 @@
    :show-inheritance:
 ```
 
-## HMI2
+## HMI1
 
 ```{eval-rst}
-.. automodule:: HMI2
-   :imported-members:
+.. autoclass:: HMI1
    :members:
-   :undoc-members:
-   :show-inheritance:
+
 ```
 
-## Example 5
+## Example 6
 ```{eval-rst}
 .. automodule:: example
    :imported-members:
