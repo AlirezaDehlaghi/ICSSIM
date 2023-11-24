@@ -1,7 +1,8 @@
 '''
 here  is a sample class
 '''
-class sampleclass:
+class sampleclass():
+    """this is another sample"""
     def testfunc(self):
         """
         it print every thing
