@@ -36,12 +36,18 @@
    :show-inheritance:
 ```
 
+## Sample Class 0
+
+```{eval-rst}
+.. autoclass:: sampleclass.sampleclass
+   :members:
+```
+
 ## Sample Class
 
 ```{eval-rst}
 .. automodule:: sampleclass.sampleclass
    :members:
-   :undoc-members:
 ```
 
 ## Example 7
