@@ -3,7 +3,7 @@
 ## Runnable
 
 ```{eval-rst}
-.. autoclass:: ics_sim.Device.Runnable
+.. autoclass:: Device.Runnable
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,7 +12,7 @@
 ## DcsComponent
 
 ```{eval-rst}
-.. autoclass:: ics_sim.Device.DcsComponent
+.. autoclass:: Device.DcsComponent
    :members:
    :undoc-members:
    :show-inheritance:
@@ -21,7 +21,7 @@
 ## HMI
 
 ```{eval-rst}
-.. autoclass:: ics_sim.Device.HMI
+.. autoclass:: Device.HMI
    :members:
    :undoc-members:
    :show-inheritance:
