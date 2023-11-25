@@ -3,7 +3,7 @@
 ## Runnable
 
 ```{eval-rst}
-.. autoclass:: Device.Runnable
+.. autoclass:: ics_sim.Device.Runnable
    :members:
    :undoc-members:
    :show-inheritance:
@@ -42,7 +42,6 @@
 .. automodule:: sampleclass.sampleclass
    :members:
    :undoc-members:
-   :show-inheritance:
 ```
 
 ## Example 7

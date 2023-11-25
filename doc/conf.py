@@ -8,8 +8,7 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath("../src/ics_sim"))
-
+sys.path.insert(0, os.path.abspath("../src"))
 
 project = 'ICSSIM'
 copyright = 'Alireza Dehlaghi Ghadim'
