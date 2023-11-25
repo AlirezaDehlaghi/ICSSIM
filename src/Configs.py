@@ -118,6 +118,7 @@ class Controllers:
 
 
 class Connection:
+    """THis is the constant class for defining connections"""
     SQLITE_CONNECTION = {
         'type': 'sqlite',
         'path': 'storage/PhysicalSimulation1.sqlite',

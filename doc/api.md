@@ -1,6 +1,5 @@
 # API reference
 
-## Runnable
 
 ## Config
 
