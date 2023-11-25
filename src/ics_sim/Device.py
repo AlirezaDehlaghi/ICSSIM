@@ -60,7 +60,6 @@ class ActuatorConnector(Physics):
 
 
 class Runnable(ABC):
-    """ This is a base runnable class"""
     COLOR_RED = '\033[91m'
     COLOR_GREEN = '\033[92m'
     COLOR_BLUE = '\033[94m'

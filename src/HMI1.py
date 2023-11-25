@@ -6,7 +6,6 @@ from Configs import TAG, Controllers
 
 
 class HMI1(HMI):
-    """ it is the first sample of HMIs"""
     def __init__(self):
         super().__init__('HMI1', TAG.TAG_LIST, Controllers.PLCs, 500)
 
@@ -34,7 +33,6 @@ class HMI1(HMI):
         self._latency = 0
 
     def _display(self):
-
 
         self.__show_table()
 

@@ -1,5 +1,6 @@
 # API reference
 
+This page is under construction!
 
 ## Config
 
@@ -12,27 +13,4 @@
 ```
 
 
-
-## Sample Class 0
-
-```{eval-rst}
-.. autoclass:: sampleclass.sampleclass
-   :members:
-```
-
-## Sample Class
-
-```{eval-rst}
-.. automodule:: sampleclass.sampleclass
-   :members:
-```
-
-## Example 7
-```{eval-rst}
-.. automodule:: example
-   :imported-members:
-   :members:
-   :undoc-members:
-   :show-inheritance:
-```
 
