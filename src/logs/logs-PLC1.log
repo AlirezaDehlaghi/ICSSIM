@@ -1,6 +1,3 @@
-2023-10-18 10:06:47,866 INFO [PLC1] Created
-2023-10-18 10:06:47,869 INFO [PLC1] creating the server on IP = 192.168.0.11:502
-2023-10-18 10:06:47,879 INFO [PLC1] started
-2023-10-18 10:07:05,601 WARNING [PLC1] receive null value for tag:bottle_level_value
-2023-10-18 10:07:05,602 WARNING [PLC1] receive null value for tag:bottle_distance_to_filler_value
-2023-10-18 10:07:05,605 WARNING [PLC1] receive null value for tag:bottle_level_max
+2023-11-29 17:35:49,246 INFO [PLC1] Created
+2023-11-29 17:35:49,262 INFO [PLC1] creating the server on IP = 192.168.0.11:502
+2023-11-29 17:35:49,308 INFO [PLC1] started
