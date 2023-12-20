@@ -13,3 +13,5 @@ input/
 .idea/
 src/logs
 src/logs/
+stc/storage
+stc/storage/

@@ -7,8 +7,8 @@ import time
 from datetime import datetime, timedelta
 from time import sleep
 import paho.mqtt.client as mqtt
-from src.AttackerBase import AttackerBase
-from src.MqttHelper import read_mqtt_params
+from AttackerBase import AttackerBase
+from MqttHelper import read_mqtt_params
 import queue
 
 

@@ -1,4 +1,5 @@
-FROM kalilinux/kali-rolling
+#FROM kalilinux/kali-rolling
+FROM ubuntu:20.04
 
 RUN mkdir src
 
@@ -24,7 +25,7 @@ RUN apt-get update \
 && apt-get install -y ettercap-common \
 && apt-get install -y nmap \
 && apt-get install -y python3-scapy \
-&& apt-get install -y paho-mqtt
+&& pip install paho-mqtt
 
 WORKDIR /src
 

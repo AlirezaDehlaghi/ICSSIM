@@ -5,7 +5,7 @@ import subprocess
 from datetime import datetime, timedelta
 from time import sleep
 
-from src.AttackerBase import AttackerBase
+from AttackerBase import AttackerBase
 
 
 class AttackerMachine(AttackerBase):

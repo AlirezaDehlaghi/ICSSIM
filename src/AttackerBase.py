@@ -6,7 +6,7 @@ from scapy.arch import get_if_addr
 from scapy.config import conf
 from scapy.layers.l2 import Ether
 from datetime import datetime, timedelta
-from src.ics_sim.Device import Runnable
+from ics_sim.Device import Runnable
 import logging
 import subprocess
 

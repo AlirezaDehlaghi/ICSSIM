@@ -1,5 +1,5 @@
 import os
-from src.AttackerBase import AttackerBase
+from AttackerBase import AttackerBase
 
 
 class Attacker(AttackerBase):

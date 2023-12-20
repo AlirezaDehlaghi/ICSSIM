@@ -115,7 +115,7 @@ services:
       wnet:
         ipv4_address: 192.168.0.42
         
-  attackermachine:
+  attacker2:
     build: attacker-docker/.
     stdin_open: true # docker run -i
     tty: true 
