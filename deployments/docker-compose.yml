@@ -115,7 +115,7 @@ services:
       wnet:
         ipv4_address: 192.168.0.42
         
-  attacker2:
+  attackermachine:
     build: attacker-docker/.
     stdin_open: true # docker run -i
     tty: true 
@@ -131,6 +131,23 @@ services:
     networks:
       wnet:
         ipv4_address: 192.168.0.41
+
+  attackerremote:
+    build: attacker-docker/.
+    stdin_open: true # docker run -i
+    tty: true
+    privileged: true
+    tty: true
+    working_dir: /src
+    entrypoint: [ "./start.sh", "AttackerRemote.py" ]
+    container_name: attacker-remote
+    volumes:
+      - ../src:/src
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      wnet:
+        ipv4_address: 192.168.0.43
 
       
 networks:

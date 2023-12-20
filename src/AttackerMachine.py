@@ -5,55 +5,15 @@ import subprocess
 from datetime import datetime, timedelta
 from time import sleep
 
-from scapy.arch import get_if_addr
-from scapy.config import conf
-from scapy.layers.l2 import Ether
-
-from ics_sim.Device import Runnable
+from src.AttackerBase import AttackerBase
 
 
-class AttackerMachine(Runnable):
+class AttackerMachine(AttackerBase):
     def __init__(self):
-        Runnable.__init__(self, 'AttackerMachine', 100)
+        AttackerBase.__init__(self, 'attacker_machine')
 
     def _before_start(self):
-        Runnable._before_start(self)
-
-        self.__attack_path = './attacks'
-        self.__log_path = os.path.join(self.__attack_path, 'attack-logs')
-
-        self.MAC = Ether().src
-        self.IP = get_if_addr(conf.iface)
-
-        if not os.path.exists(self.__log_path):
-            os.makedirs(self.__log_path)
-
-        self.__log_attack_summary = self.setup_logger(
-            "attacker_machine_summary",
-            logging.Formatter('%(message)s'),
-            file_dir=self.__log_path,
-            file_ext='.csv'
-        )
-
-        self.__log_attack_summary.info("{},{},{},{},{},{},{},{}".format("attack",
-                                                                        "startStamp",
-                                                                        "endStamp",
-                                                                        "startTime",
-                                                                        "endTime",
-                                                                        "attackerMAC",
-                                                                        "attackerIP",
-                                                                        "description"
-                                                                        )
-                                       )
-
-        self.__attack_list = {'scan-ettercap': 'ip-scan',
-                              'scan-ping': 'ip-scan',
-                              'scan-nmap': 'port-scan',
-                              'scan-scapy': 'ip-scan',
-                              'mitm-scapy': 'mitm',
-                              'mitm-ettercap': 'mitm',
-                              'ddos': 'ddos',
-                              'replay-scapy': 'replay'}
+        AttackerBase._before_start(self)
 
         self.__attack_scenario = []
         self.__attack_scenario += ['scan-ettercap'] * 0  # this should be 0, cannot automate
@@ -67,7 +27,6 @@ class AttackerMachine(Runnable):
 
         random.shuffle(self.__attack_scenario)
 
-        self.__attack_cnt = len(self.__attack_list)
 
     def _logic(self):
         while True:
@@ -84,41 +43,17 @@ class AttackerMachine(Runnable):
 
         for attack_name in self.__attack_scenario:
             try:
-                attack_short_name = self.__attack_list[attack_name]
-                attack_path = os.path.join(self.__attack_path, str(attack_name) + ".sh")
+                attack_short_name = self.attack_list[attack_name]
+
+                self._apply_attack(attack_short_name, attack_name)
 
                 if not self.__status_board.keys().__contains__(attack_name):
                     self.__status_board[attack_name] = 0
                 self.__status_board[attack_name] += 1
 
-                if not os.path.isfile(attack_path):
-                    raise ValueError('command {} does not exist'.format(attack_path))
-
-                self.report(self._make_text('running ' + attack_path, self.COLOR_YELLOW))
-                log_file = os.path.join(self.__log_path, "log-{}.txt".format(attack_name))
-                start_time = datetime.now()
-                subprocess.run([attack_path, self.__log_path, log_file])
-                end_time = datetime.now()
-
-                if attack_name == 'ddos':
-                    start_time = start_time + timedelta(seconds=5)
-
-                self.__log_attack_summary.info("{},{},{},{},{},{},{},{}".format(attack_short_name,
-                                                                                start_time.timestamp(),
-                                                                                end_time.timestamp(),
-                                                                                start_time,
-                                                                                end_time,
-                                                                                self.MAC,
-                                                                                self.IP,
-                                                                                attack_name,
-                                                                                )
-                                               )
                 for attack in self.__status_board.keys():
                     text = '{}: applied {} times'.format(attack, self.__status_board[attack])
                     self.report(self._make_text(text, self.COLOR_GREEN))
-
-                self.report('waiting 40 seconds')
-                sleep(40)
 
             except ValueError as e:
                 self.report(e.__str__())

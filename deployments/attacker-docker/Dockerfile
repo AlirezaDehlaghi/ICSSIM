@@ -23,7 +23,8 @@ RUN apt-get update \
 && apt-get install -y python3-memcache \ 
 && apt-get install -y ettercap-common \
 && apt-get install -y nmap \
-&& apt-get install -y python3-scapy
+&& apt-get install -y python3-scapy \
+&& apt-get install -y paho-mqtt
 
 WORKDIR /src
 

@@ -1,5 +1,7 @@
+import multiprocessing
 import os
 import sys
+import threading
 import time
 import random
 from abc import ABC, abstractmethod
@@ -75,7 +77,8 @@ class Runnable(ABC):
         self.__name = name
         self.__loop_cycle = loop
 
-        self.__loop_process = Process(target=self.__do_loop, args=())
+        # self.__loop_process = Process(target=self.do_loop, args=())
+        self.__loop_process = threading.Thread(target=self.do_loop, args=())
         self._last_loop_time = 0
         self._current_loop_time = 0
         self._start_time = 0
@@ -138,7 +141,7 @@ class Runnable(ABC):
     def _before_stop(self):
         pass
 
-    def __do_loop(self):
+    def do_loop(self):
         try:
             self.report("started", logging.INFO)
             self._before_start()

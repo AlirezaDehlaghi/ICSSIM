@@ -3,8 +3,13 @@ src/ics_sim/__pycache__
 src/.idea
 src/.idea/
 commit/
-src/attacks/logs/
+src/attacks/attacks-logs/
 deployments/traffic.pcap
 deployments/push-attacker-docker.sh
 deployments/push-ics-docker.sh
-
+input
+input/
+.idea
+.idea/
+src/logs
+src/logs/
