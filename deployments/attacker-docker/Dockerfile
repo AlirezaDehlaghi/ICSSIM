@@ -7,7 +7,7 @@ COPY ./src/ ./src/
 
 RUN apt-get update
 
-RUN DEBIAN_FRONTEND="noninteractive" apt-get -y install tzdata
+RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y tzdata
 
 RUN apt-get update \
 && apt-get install -y sudo \
@@ -15,12 +15,12 @@ RUN apt-get update \
 && apt-get install -y iputils-ping \
 && apt-get install -y net-tools \
 && apt-get install -y git \
-&& apt-get -y install nano \
-&& apt --yes install python3-pip \	
+&& apt-get install -y nano \
+&& apt-get install -y python3-pip \
 && pip install pyModbusTCP \
-&& apt install telnet \
+&& apt-get install -y telnet \
 && apt-get install -y memcached \
-&& apt-get install -y python3-memcache \ 
+&& apt-get install -y python3-memcache \
 && apt-get install -y ettercap-common \
 && apt-get install -y nmap \
 && apt-get install -y python3-scapy \
@@ -32,5 +32,3 @@ WORKDIR /src
 
 
 #COPY ./start.sh ./start.sh
-
-
