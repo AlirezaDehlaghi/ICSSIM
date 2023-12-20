@@ -31,7 +31,7 @@ class AttackerRemote(AttackerBase):
         self.setup_mqtt.start()
 
     def setup_mqtt_client(self):
-        temp_address = "../local/connection_hiveMQ.txt"
+        temp_address = "../input/sample_mqtt_connection.txt"
 
         connection_params = read_mqtt_params(temp_address)
         connection_params['topic'] = connection_params['topic'] + '/#'
