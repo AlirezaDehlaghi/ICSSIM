@@ -27,11 +27,12 @@ class AttackerRemote(AttackerBase):
 
         self.attacksQueue = queue.Queue()
         self.client = mqtt.Client()
+        self.report("debug",level=logging.INFO)
         self.setup_mqtt = threading.Thread(target=self.setup_mqtt_client)
         self.setup_mqtt.start()
 
     def setup_mqtt_client(self):
-        temp_address = "../input/sample_mqtt_connection.txt"
+        temp_address = "input/sample_mqtt_connection.txt"
 
         connection_params = read_mqtt_params(temp_address)
         connection_params['topic'] = connection_params['topic'] + '/#'
@@ -56,11 +57,11 @@ class AttackerRemote(AttackerBase):
         self.client.loop_forever()
 
     def on_subscribe(self, client, userdata, mid, granted_qos):
-        self.report("Subscribed: " + str(mid) + " " + str(granted_qos))
+        self.report("Subscribed: " + str(mid) + " " + str(granted_qos), level=logging.INFO)
 
     def on_message(self, client, userdata, msg):
-        self.report("message received")
-        self.report(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+        self.report("message received",level=logging.INFO)
+        self.report(msg.topic + " " + str(msg.qos) + " " + str(msg.payload),level=logging.INFO)
         self.attacksQueue.put(msg)
 
     def _logic(self):
@@ -69,7 +70,7 @@ class AttackerRemote(AttackerBase):
         time.sleep(2)
 
     def process_messages(self, attack_data):
-        self.report('attacker_remote start apply following attack')
+        self.report('attacker_remote start apply following attack',level=logging.INFO)
         attack_dic = json.loads(attack_data.payload.decode("utf-8"))
         json_attack_key = "attack"
 

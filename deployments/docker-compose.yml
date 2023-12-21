@@ -123,7 +123,7 @@ services:
     tty: true
     working_dir: /src
     entrypoint: ["./start.sh", "AttackerMachine.py"]
-    container_name: attacker-machine
+    container_name: attackermachine
     volumes:
       - ../src:/src
       - "/etc/timezone:/etc/timezone:ro"
@@ -140,7 +140,7 @@ services:
     tty: true
     working_dir: /src
     entrypoint: [ "./start.sh", "AttackerRemote.py" ]
-    container_name: attacker-remote
+    container_name: attackerremote
     volumes:
       - ../src:/src
       - "/etc/timezone:/etc/timezone:ro"
