@@ -111,6 +111,9 @@ class Runnable(ABC):
                             filemode='w')
                             """
         """To setup as many loggers as you want"""
+        if not os.path.exists(file_dir):
+            os.makedirs(file_dir)
+
         file_path = os.path.join(file_dir,name) + file_ext
         handler = logging.FileHandler(file_path, mode=write_mode)
         handler.setFormatter(format_str)
