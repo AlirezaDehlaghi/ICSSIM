@@ -1,0 +1,4 @@
+2023-12-22 10:20:01,332 INFO [PLC2] Created
+2023-12-22 10:20:01,336 INFO [PLC2] creating the server on IP = 192.168.0.12:502
+2023-12-22 10:20:01,337 INFO [PLC2] started
+2023-12-22 10:53:39,200 WARNING [PLC2] receive null value for tag:tank_output_flow_value
