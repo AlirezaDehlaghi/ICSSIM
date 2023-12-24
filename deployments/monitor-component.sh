@@ -11,7 +11,7 @@ fi
 
 # Check Args Value
 
-if [ $1 = "plc1" ] || [ $1 = "plc2" ] || [ $1 = "hmi1" ] || [ $1 = "hmi2" ] || [ $1 = "hmi3" ] || [ $1 = "pys" ] || [ $1 = "attacker" ] || [ $1 = "attacker-machine" ] || [ $1 = "attacker-remote" ]
+if [ $1 = "plc1" ] || [ $1 = "plc2" ] || [ $1 = "hmi1" ] || [ $1 = "hmi2" ] || [ $1 = "hmi3" ] || [ $1 = "pys" ] || [ $1 = "attacker" ] || [ $1 = "attackermachine" ] || [ $1 = "attackerremote" ]
 then 
 	# Mian command
 	sudo docker container attach $1
@@ -25,8 +25,8 @@ else
 	hmi3
 	pys
 	attacker
-	attacker-machine
-	attacker-remote"
+	attackermachine
+	attackerremote"
 fi
 
 

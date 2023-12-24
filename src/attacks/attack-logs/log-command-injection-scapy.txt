@@ -1,1 +1,0 @@
-executed ['0', '5', '8'] <Logger command (INFO)>
