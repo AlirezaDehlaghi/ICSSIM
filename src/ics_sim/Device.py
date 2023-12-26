@@ -81,7 +81,7 @@ class Runnable(ABC):
 
         # self.__loop_process = Process(target=self.do_loop, args=())
         self.stop_event = threading.Event()
-        self.__loop_process = threading.Thread(target=self.do_loop, args=(self.stop_event))
+        self.__loop_process = threading.Thread(target=self.do_loop, args=(self.stop_event,))
         self._last_loop_time = 0
         self._current_loop_time = 0
         self._start_time = 0
