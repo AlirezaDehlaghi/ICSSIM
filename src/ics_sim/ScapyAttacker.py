@@ -240,13 +240,11 @@ class ScapyAttacker:
             log.info(str(node))
 
     @staticmethod
-    def replay_attack(mode, destination, sniff_time, replay_cnt, log):
-        if mode == "network":
+    def replay_attack(destination, sniff_time, replay_cnt, log):
+        if "/" in destination:
             ScapyAttacker.scan_network(destination, sniff_time)
-        elif mode == "link":
-            ScapyAttacker.scan_link(destination.split(",")[0], destination.split(",")[1], sniff_time)
         else:
-            raise Exception("arg \'mode\' value not recognized. Should be \'network\' or \'link\'")
+            ScapyAttacker.scan_link(destination.split(",")[0], destination.split(",")[1], sniff_time)
 
         for i in range(replay_cnt):
             print("Replaying {}".format(i))
@@ -264,14 +262,12 @@ class ScapyAttacker:
         print('# Replayed sniffed commands for {} times'.format(replay_cnt))
 
     @staticmethod
-    def mitm_attack(mode, destination, sniff_time, error, log):
+    def mitm_attack(destination, sniff_time, error, log):
         ScapyAttacker.error = error
-        if mode == "network":
+        if "/" in destination:
             ScapyAttacker.inject_network(destination, sniff_time)
-        elif mode == "link":
-            ScapyAttacker.inject_link(destination.split(",")[0], destination.split(",")[1], sniff_time)
         else:
-            raise Exception("arg \'mode\' value not recognized. Should be \'network\' or \'link\'")
+            ScapyAttacker.inject_link(destination.split(",")[0], destination.split(",")[1], sniff_time)
 
         log.info('# Changed {} packets in the network {}:'.format(len(ScapyAttacker.sniff_commands), destination))
         for cmd in ScapyAttacker.sniff_commands:
@@ -284,10 +280,6 @@ if __name__ == '__main__':
                         help='csv file to output', required=True)
     parser.add_argument('--attack', metavar='determine type of attack',
                         help='attack type could be scan, replay, mitm', required=True)
-
-    parser.add_argument('--mode', metavar='network/link shows the apply mode for MITM and REPLAY attacks',
-                        type=str, default='network',
-                        help='network/link shows the apply mode for MITM and REPLAY attacks', required=False)
 
     parser.add_argument('--timeout', metavar='specify attack timeout', type=int, default=10,
                         help='attack timeout for attacks, MitM/Replay attacks: attack seconds, scan: packets',
@@ -311,9 +303,9 @@ if __name__ == '__main__':
         ScapyAttacker.scan_attack(args.destination, logger)
 
     if args.attack == 'replay':
-        ScapyAttacker.replay_attack(args.mode, args.destination, args.timeout, int(args.parameter), logger)
+        ScapyAttacker.replay_attack(args.destination, args.timeout, int(args.parameter), logger)
 
     if args.attack == 'mitm':
-        ScapyAttacker.mitm_attack(args.mode, args.destination, args.timeout,  args.parameter, logger)
+        ScapyAttacker.mitm_attack(args.destination, args.timeout,  args.parameter, logger)
 
 

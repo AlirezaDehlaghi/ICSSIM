@@ -101,8 +101,10 @@ class AttackerBase(Runnable, ABC):
             _do_scan_scapy_attack(log_dir, log_file, destination='192.168.0.1/24', timeout=10)
         elif name == "replay-scapy":
             _do_replay_scapy_attack(log_dir, log_file, timeout=15, replay_count=3,
-                                    destination='192.168.0.11,192.168.0.22', mode='link')
+                                    destination='192.168.0.11,192.168.0.22')
+
         elif name == "mitm-scapy":
+            #_do_mitm_scapy_attack(log_dir, log_file, timeout=15, noise=0.2, destination='192.168.0.11,192.168.0.21')
             _do_mitm_scapy_attack(log_dir, log_file, timeout=30, noise=0.1, destination='192.168.0.1/24')
         elif name == "scan-nmap":
             _do_scan_nmap_attack(log_dir, log_file, destination='192.168.0.1-255')

@@ -102,7 +102,8 @@ class Runnable(ABC):
     def _set_logger_level(self, level=logging.DEBUG):
         self._logger.setLevel(level)
 
-    def setup_logger(self, name, format_str,  level=logging.INFO, file_dir = "./logs", file_ext = ".log" , write_mode="w"):
+    @staticmethod
+    def setup_logger(name, format_str, level=logging.INFO, file_dir ="./logs", file_ext =".log", write_mode="w"):
         """To setup as many loggers as you want"""
 
         """

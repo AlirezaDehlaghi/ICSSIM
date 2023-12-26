@@ -17,12 +17,11 @@ def _do_scan_scapy_attack(log_dir, log_file, destination, timeout=10):
     _do_attack(log_dir, log_file, bash_command)
 
 
-def _do_replay_scapy_attack(log_dir, log_file, destination, timeout=15, replay_count=3, mode='link'):
+def _do_replay_scapy_attack(log_dir, log_file, destination, timeout=15, replay_count=3):
     bash_command = ['python3',
                     'ics_sim/ScapyAttacker.py',
                     '--output', log_file,
                     '--attack', 'replay',
-                    '--mode', mode,
                     '--timeout', str(timeout),
                     '--parameter', str(replay_count),
                     '--destination', destination]
