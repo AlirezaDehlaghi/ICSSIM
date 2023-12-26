@@ -77,8 +77,11 @@ class Runnable(ABC):
         self.__name = name
         self.__loop_cycle = loop
 
+
+
         # self.__loop_process = Process(target=self.do_loop, args=())
-        self.__loop_process = threading.Thread(target=self.do_loop, args=())
+        self.stop_event = threading.Event()
+        self.__loop_process = threading.Thread(target=self.do_loop, args=(self.stop_event))
         self._last_loop_time = 0
         self._current_loop_time = 0
         self._start_time = 0
@@ -135,7 +138,8 @@ class Runnable(ABC):
 
     def stop(self):
         self._before_stop()
-        self.__loop_process.terminate()
+        self.stop_event.set()
+        #self.__loop_process.terminate()
         self._after_stop()
         self.report("stopped", logging.INFO)
 
@@ -145,13 +149,13 @@ class Runnable(ABC):
     def _before_stop(self):
         pass
 
-    def do_loop(self):
+    def do_loop(self, stop_event):
         try:
             self.report("started", logging.INFO)
             self._before_start()
 
             self._start_time = self._current_loop_time = current_milli_cycle_time(self.__loop_cycle)
-            while True:
+            while not stop_event.is_set():
 
                 self._last_loop_time = self._current_loop_time
                 wait = self._last_loop_time + self.__loop_cycle - current_milli_time()
