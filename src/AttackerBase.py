@@ -10,7 +10,7 @@ from ics_sim.Device import Runnable
 import logging
 import subprocess
 
-from src.ics_sim.Attacks import _do_scan_scapy_attack, _do_replay_scapy_attack, _do_mitm_scapy_attack, \
+from ics_sim.Attacks import _do_scan_scapy_attack, _do_replay_scapy_attack, _do_mitm_scapy_attack, \
     _do_scan_nmap_attack, _do_command_injection_attack, _do_ddos_attack
 
 
@@ -79,8 +79,10 @@ class AttackerBase(Runnable, ABC):
         self._do_sample_attack(full_name, self.log_path, log_file)
         end_time = datetime.now()
 
+        wait_time = 5	
         if full_name == 'ddos':
             start_time = start_time + timedelta(seconds=5)
+            wait_time = 40
 
         self.attack_history.info(
             "{},{},{},{},{},{},{},{}".format(
@@ -90,17 +92,17 @@ class AttackerBase(Runnable, ABC):
         )
         self.report(f'applied {full_name} attack successfully.')
 
-        self.report('waiting 40 seconds to cooldown attack')
-        sleep(40)
+        self.report(f'waiting {wait_time} seconds to cooldown attack')
+        sleep(wait_time)
 
     @staticmethod
     def _do_sample_attack(name, log_dir, log_file):
-        if name == "scan_scapy":
+        if name == "scan-scapy":
             _do_scan_scapy_attack(log_dir, log_file, destination='192.168.0.1/24', timeout=10)
-        elif name == "replay_scapy":
+        elif name == "replay-scapy":
             _do_replay_scapy_attack(log_dir, log_file, timeout=15, replay_count=3,
                                     destination='192.168.0.11,192.168.0.22', mode='link')
-        elif name == "mitm_scapy":
+        elif name == "mitm-scapy":
             _do_mitm_scapy_attack(log_dir, log_file, timeout=30, noise=0.1, destination='192.168.0.1/24')
         elif name == "scan-nmap":
             _do_scan_nmap_attack(log_dir, log_file, destination='192.168.0.1-255')
@@ -108,3 +110,5 @@ class AttackerBase(Runnable, ABC):
             _do_command_injection_attack(log_dir, log_file, 'CommandInjectionAgent.py', command_counter=30)
         elif name == "ddos":
             _do_ddos_attack(log_dir, log_file, 'DDosAgent.py', 10, destination='192.168.0.11')
+        else:
+            print("Attack not found")

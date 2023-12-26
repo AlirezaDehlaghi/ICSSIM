@@ -31,6 +31,7 @@ def _do_replay_scapy_attack(log_dir, log_file, destination, timeout=15, replay_c
 
 
 def _do_mitm_scapy_attack(log_dir, log_file, destination, timeout=30, noise=0.1):
+    subprocess.run(['echo', '0'], stdout=open('/proc/sys/net/ipv4/ip_forward',"w"))
     bash_command = ['python3',
                     'ics_sim/ScapyAttacker.py',
                     '--output', log_file,
@@ -40,10 +41,11 @@ def _do_mitm_scapy_attack(log_dir, log_file, destination, timeout=30, noise=0.1)
                     '--destination', destination]
 
     _do_attack(log_dir, log_file, bash_command)
+    subprocess.run(['echo', '1'], stdout=open('/proc/sys/net/ipv4/ip_forward',"w"))
 
 
 def _do_scan_nmap_attack(log_dir, log_file, destination):
-    bash_command = ['nmap -p- -oN $2 192.168.0.1-255',
+    bash_command = ['nmap',
                     '-p-',
                     '-oN', log_file,
                     destination]
