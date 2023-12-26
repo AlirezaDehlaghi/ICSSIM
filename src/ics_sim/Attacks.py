@@ -65,7 +65,7 @@ def _do_ddos_attack(log_dir, log_file, ddos_agent_path, num_process, destination
     for i in range(num_process):
         processes.append(f'python3 {ddos_agent_path} A{i} {destination} {log_file}')
 
-    bash_command = '& '.join(processes)
+    bash_command = (' & '.join(processes)).split(' ')
     _do_attack(log_dir, log_file, bash_command)
 
 

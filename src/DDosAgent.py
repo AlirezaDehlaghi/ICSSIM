@@ -13,11 +13,14 @@ class DDosAgent(HMI):
     max = 0
 
     def __init__(self, name, target, shared_logger):
+        self.__shared_logger = logger
         super().__init__(name, TAG.TAG_LIST, Controllers.PLCs, 1)
         self.__target = target
-        self.__shared_logger = logger
-        target_plc = [plc_id for plc_id, plc_data in Controllers.PLCs if plc_data["ip"] == destination]
-        possible_signals = [tag_name for tag_name, tag_data in TAG.TAG_LIST if tag_data["plc"] in target_plc]
+
+        other = [plc_id for plc_id, plc_data in Controllers.PLCs.items()]
+        target_plc = [plc_id for plc_id, plc_data in Controllers.PLCs.items() if plc_data["ip"] == destination]
+
+        possible_signals = [tag_name for tag_name, tag_data in TAG.TAG_LIST.items() if tag_data["plc"] in target_plc]
 
         self.__counter = 0
         self.__target = random.choice(possible_signals)
@@ -86,6 +89,7 @@ if __name__ == '__main__':
     sleep(60)
 
     for attacker in attacker_list:
+        print('stopping')    
         attacker.stop()
 
 
