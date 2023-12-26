@@ -10,6 +10,8 @@ from ics_sim.Device import Runnable
 import logging
 import subprocess
 
+from src.attacks.Attacks import _do_scan_scapy_attack
+
 
 class AttackerBase(Runnable, ABC):
     def __init__(self, name1):
@@ -67,7 +69,18 @@ class AttackerBase(Runnable, ABC):
         self.report(self._make_text('running ' + attack_path, self.COLOR_YELLOW))
         log_file = os.path.join(self.log_path, "log-{}.txt".format(full_name))
         start_time = datetime.now()
-        subprocess.run([attack_path, self.log_path, log_file])
+
+        #todo: changed for test
+        if full_name == "scan_scapy":
+            _do_scan_scapy_attack(self.log_path, log_file)
+        else:
+            subprocess.run([attack_path, self.log_path, log_file])
+
+
+
+
+
+
         end_time = datetime.now()
 
         if full_name == 'ddos':
