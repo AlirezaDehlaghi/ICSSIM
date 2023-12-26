@@ -10,7 +10,7 @@ from ics_sim.Device import Runnable
 import logging
 import subprocess
 
-from src.attacks.Attacks import _do_scan_scapy_attack
+from attacks.Attacks import _do_scan_scapy_attack
 
 
 class AttackerBase(Runnable, ABC):
@@ -71,7 +71,7 @@ class AttackerBase(Runnable, ABC):
         start_time = datetime.now()
 
         #todo: changed for test
-        if full_name == "scan_scapy":
+        if full_name == "scan-scapy":
             _do_scan_scapy_attack(self.log_path, log_file)
         else:
             subprocess.run([attack_path, self.log_path, log_file])
