@@ -10,7 +10,8 @@ from ics_sim.Device import Runnable
 import logging
 import subprocess
 
-from attacks.Attacks import _do_scan_scapy_attack
+from src.ics_sim.Attacks import _do_scan_scapy_attack, _do_replay_scapy_attack, _do_mitm_scapy_attack, \
+    _do_scan_nmap_attack, _do_command_injection_attack, _do_ddos_attack
 
 
 class AttackerBase(Runnable, ABC):
@@ -21,46 +22,41 @@ class AttackerBase(Runnable, ABC):
         Runnable._before_start(self)
 
         self.attack_path = os.path.join('.', 'attacks')
-        self.log_path = os.path.join(self.attack_path, 'attack-logs')
+        self.log_path = os.path.join('.', 'logs', 'attack-logs')
+        if not os.path.exists(self.log_path):
+            os.makedirs(self.log_path)
 
         self.MAC = Ether().src
         self.IP = get_if_addr(conf.iface)
 
-        if not os.path.exists(self.log_path):
-            os.makedirs(self.log_path)
-
-        self.log_attack_summary = self.setup_logger(
+        self.attack_history = self.setup_logger(
             f'{self.name()}_summary',
             logging.Formatter('%(message)s'),
             file_dir=self.log_path,
             file_ext='.csv'
         )
 
-        self.log_attack_summary.info("{},{},{},{},{},{},{},{}".format("attack",
-                                                                      "startStamp",
-                                                                      "endStamp",
-                                                                      "startTime",
-                                                                      "endTime",
-                                                                      "attackerMAC",
-                                                                      "attackerIP",
-                                                                      "description"
-                                                                      )
-                                     )
+        self.attack_history.info(
+            "{},{},{},{},{},{},{},{}"
+            .format("attack", "startStamp", "endStamp", "startTime", "endTime", "attackerMAC", "attackerIP",
+                    "description")
+        )
 
-        self.attack_list = {'scan-ettercap': 'ip-scan',
-                            'scan-ping': 'ip-scan',
-                            'scan-nmap': 'port-scan',
-                            'scan-scapy': 'ip-scan',
-                            'mitm-scapy': 'mitm',
-                            'mitm-ettercap': 'mitm',
-                            'ddos': 'ddos',
-                            'replay-scapy': 'replay',
-                            'command-injection': 'command-injection'}
+        self.attack_list = {
+            # 'scan-ettercap': 'ip-scan',
+            # 'scan-ping': 'ip-scan',
+            'scan-nmap': 'port-scan',
+            'scan-scapy': 'ip-scan',
+            'mitm-scapy': 'mitm',
+            # 'mitm-ettercap': 'mitm',
+            'ddos': 'ddos',
+            'replay-scapy': 'replay',
+            'command-injection': 'command-injection'}
 
         self.attack_cnt = len(self.attack_list)
 
-    def _apply_attack(self, short_name, full_name):
-
+    def _old_apply_attack(self, short_name, full_name):
+        # todo: we may remote this function in future.
         attack_path = os.path.join(self.attack_path, str(full_name) + ".sh")
 
         if not os.path.isfile(attack_path):
@@ -70,34 +66,45 @@ class AttackerBase(Runnable, ABC):
         log_file = os.path.join(self.log_path, "log-{}.txt".format(full_name))
         start_time = datetime.now()
 
-        #todo: changed for test
+        # todo: changed for test
         if full_name == "scan-scapy":
             _do_scan_scapy_attack(self.log_path, log_file)
         else:
             subprocess.run([attack_path, self.log_path, log_file])
 
+    def _apply_attack(self, short_name, full_name):
 
-
-
-
-
+        log_file = os.path.join(self.log_path, f'log-{full_name}.txt')
+        start_time = datetime.now()
+        self._do_sample_attack(full_name, self.log_path, log_file)
         end_time = datetime.now()
 
         if full_name == 'ddos':
             start_time = start_time + timedelta(seconds=5)
 
-        self.log_attack_summary.info("{},{},{},{},{},{},{},{}".format(short_name,
-                                                                      start_time.timestamp(),
-                                                                      end_time.timestamp(),
-                                                                      start_time,
-                                                                      end_time,
-                                                                      self.MAC,
-                                                                      self.IP,
-                                                                      full_name
-                                                                      )
-                                     )
+        self.attack_history.info(
+            "{},{},{},{},{},{},{},{}".format(
+                short_name, start_time.timestamp(), end_time.timestamp(), start_time, end_time, self.MAC, self.IP,
+                full_name
+            )
+        )
         self.report(f'applied {full_name} attack successfully.')
 
         self.report('waiting 40 seconds to cooldown attack')
         sleep(40)
 
+    @staticmethod
+    def _do_sample_attack(name, log_dir, log_file):
+        if name == "scan_scapy":
+            _do_scan_scapy_attack(log_dir, log_file, destination='192.168.0.1/24', timeout=10)
+        elif name == "replay_scapy":
+            _do_replay_scapy_attack(log_dir, log_file, timeout=15, replay_count=3,
+                                    destination='192.168.0.11,192.168.0.22', mode='link')
+        elif name == "mitm_scapy":
+            _do_mitm_scapy_attack(log_dir, log_file, timeout=30, noise=0.1, destination='192.168.0.1/24')
+        elif name == "scan-nmap":
+            _do_scan_nmap_attack(log_dir, log_file, destination='192.168.0.1-255')
+        elif name == "command-injection":
+            _do_command_injection_attack(log_dir, log_file, 'CommandInjectionAgent.py', command_counter=30)
+        elif name == "ddos":
+            _do_ddos_attack(log_dir, log_file, 'DDosAgent.py', 10, destination='192.168.0.11')

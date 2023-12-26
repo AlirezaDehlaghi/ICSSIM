@@ -13,14 +13,17 @@ class Attacker(AttackerBase):
             self._make_text(str(number), self.COLOR_BLUE)
         )
 
-    def _logic(self):
-        menu = "\n"
-        menu += self.__get_menu_line('{} to {} press {} \n', 0, 'clear')
+    def __create_menu(self):
+        menu = "\n" + self.__get_menu_line('{} to {} press {} \n', 0, 'clear')
         i = 0
         for attack in self.attack_list.keys():
             i += 1
-            menu += self.__get_menu_line('{} To apply the {} attack press {} \n', i , attack)
-        self.report(menu)
+            menu += self.__get_menu_line('{} To apply the {} attack press {} \n', i, attack)
+
+        return menu
+
+    def _logic(self):
+        self.report(self.__create_menu())
 
         try:
             attack_name = int(input('your choice (1 to {}): '.format(self.attack_cnt)))
