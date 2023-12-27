@@ -24,7 +24,7 @@ class AttackerBase(Runnable, ABC):
     NAME_ATTACK_COMMAND_INJECTION = 'command-injection',
 
     def __init__(self, name1):
-        super().__init__(self, name1, 100)
+        super().__init__(name1, 100)
 
         self.log_path = os.path.join('.', 'logs', 'attack-logs')
         if not os.path.exists(self.log_path):
