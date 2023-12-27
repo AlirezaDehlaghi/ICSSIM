@@ -109,9 +109,10 @@ class AttackerRemote(AttackerBase):
 
     @staticmethod
     def find_tag_in_msg(msg, tag):
+        tag = tag.lower()
         if not msg.keys().__contains__(tag):
-            raise Exception('Cannot find tag name:({tag}) in message!')
-        return msg[tag]
+            raise Exception(f'Cannot find tag name: ({tag}) in message!')
+        return msg[tag].lower()
 
 
 if __name__ == '__main__':
