@@ -82,6 +82,7 @@ if __name__ == '__main__':
     args = DDosAgent.get_args()
 
     directory, filename = os.path.split(args.log_path)
+    filename, extension = os.path.splitext(filename)
     logger = Runnable.setup_logger(
         filename,
         logging.Formatter('%(asctime)s %(levelname)s %(message)s'),
