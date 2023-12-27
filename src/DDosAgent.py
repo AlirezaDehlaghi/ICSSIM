@@ -61,14 +61,13 @@ class DDosAgent(HMI):
         parser = argparse.ArgumentParser(description='PCAP reader')
 
         parser.add_argument('name_prefix', metavar='Name prefix of agent',
-                            help='This name prefix will be part of agent name!',
-                            required=True)
+                            help='This name prefix will be part of agent name!')
 
         parser.add_argument('--target', metavar='IP of PLC',
                             help='IP of PLC which is target of attack!', default='192.168.0.11',
                             required=True)
 
-        parser.add_argument('--log', metavar='Log file',
+        parser.add_argument('--log_path', metavar='Log file',
                             help='the file to write logs!', default='./logs/attack-logs/log-ddos.log',
                             required=True)
 
@@ -81,7 +80,7 @@ class DDosAgent(HMI):
 if __name__ == '__main__':
     args = DDosAgent.get_args()
 
-    directory, filename = os.path.split(args.log)
+    directory, filename = os.path.split(args.log_path)
     logger = Runnable.setup_logger(
         filename,
         logging.Formatter('%(asctime)s %(levelname)s %(message)s'),

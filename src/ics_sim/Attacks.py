@@ -61,12 +61,20 @@ def _do_command_injection_attack(log_dir, log_file, command_injection_agent, com
 
 
 def _do_ddos_attack(log_dir, log_file, ddos_agent_path, timeout,  num_process, target):
+    __make_dir_editable(log_dir)
+    processes_args = []
     processes = []
     for i in range(num_process):
-        processes.append(f'python3 {ddos_agent_path} Agent{i} --timeout {timeout} --target {target} --log_path {log_file}')
+        processes_args.append(f'python3 {ddos_agent_path} Agent{i} --timeout {timeout} --target {target} --log_path {log_file}'.split(' '))
 
-    bash_command = (' & '.join(processes)).split(' ')
-    _do_attack(log_dir, log_file, bash_command)
+    for i in range(num_process):
+        processes.append(subprocess.Popen(processes_args[i]))
+     
+    for i in range(num_process):
+        processes[i].wait()
+        
+    print('execution finished')  
+    __make_dir_editable(log_file)
 
 
 def _do_attack(log_dir, log_file, bash_command):
