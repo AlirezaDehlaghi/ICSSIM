@@ -30,6 +30,7 @@ class DDosAgent(HMI):
     def _before_start(self):
         self._set_clear_scr(False)
         sleep(5)
+        self.report(f'selected target = {self.__target}')
 
     def _logic(self):
         try:
