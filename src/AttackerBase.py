@@ -16,12 +16,12 @@ from ics_sim.Attacks import _do_scan_scapy_attack, _do_replay_scapy_attack, _do_
 
 class AttackerBase(Runnable, ABC):
 
-    NAME_ATTACK_SCAN_MMAP = 'scan-nmap',
-    NAME_ATTACK_SCAN_SCAPY = 'scan-scapy',
-    NAME_ATTACK_MITM_SCAPY = 'mitm-scapy',
-    NAME_ATTACK_REPLY_SCAPY = 'replay-scapy',
-    NAME_ATTACK_DDOS = 'ddos',
-    NAME_ATTACK_COMMAND_INJECTION = 'command-injection',
+    NAME_ATTACK_SCAN_MMAP = 'scan-nmap'
+    NAME_ATTACK_SCAN_SCAPY = 'scan-scapy'
+    NAME_ATTACK_MITM_SCAPY = 'mitm-scapy'
+    NAME_ATTACK_REPLY_SCAPY = 'replay-scapy'
+    NAME_ATTACK_DDOS = 'ddos'
+    NAME_ATTACK_COMMAND_INJECTION = 'command-injection'
 
     def __init__(self, name1):
         super().__init__(name1, 100)
