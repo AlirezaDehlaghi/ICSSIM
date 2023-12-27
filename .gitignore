@@ -9,4 +9,5 @@ deployments/push-ics-docker.sh
 .idea
 .idea/
 src/logs/*
+rc/storage/*
 
