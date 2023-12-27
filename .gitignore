@@ -9,5 +9,10 @@ deployments/push-ics-docker.sh
 .idea
 .idea/
 src/logs/*
+!src/logs/attack-logs/
+src/logs/attack-logs/*
+!src/logs/attack-logs/.gitignore
 src/storage/*
+!src/storage/.gitignore
+
 
