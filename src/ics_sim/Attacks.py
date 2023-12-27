@@ -6,30 +6,30 @@ def __make_dir_editable(path):
     subprocess.run(bash_command, shell=True, check=True)
 
 
-def _do_scan_scapy_attack(log_dir, log_file, destination, timeout=10):
+def _do_scan_scapy_attack(log_dir, log_file, target, timeout=10):
     bash_command = ['python3',
                     'ics_sim/ScapyAttacker.py',
                     '--output', log_file,
                     '--attack', 'scan',
                     '--timeout', str(timeout),
-                    '--destination', destination]
+                    '--target', target]
 
     _do_attack(log_dir, log_file, bash_command)
 
 
-def _do_replay_scapy_attack(log_dir, log_file, destination, timeout=15, replay_count=3):
+def _do_replay_scapy_attack(log_dir, log_file, target, timeout=15, replay_count=3):
     bash_command = ['python3',
                     'ics_sim/ScapyAttacker.py',
                     '--output', log_file,
                     '--attack', 'replay',
                     '--timeout', str(timeout),
                     '--parameter', str(replay_count),
-                    '--destination', destination]
+                    '--target', target]
 
     _do_attack(log_dir, log_file, bash_command)
 
 
-def _do_mitm_scapy_attack(log_dir, log_file, destination, timeout=30, noise=0.1):
+def _do_mitm_scapy_attack(log_dir, log_file, target, timeout=30, noise=0.1):
     subprocess.run(['echo', '0'], stdout=open('/proc/sys/net/ipv4/ip_forward',"w"))
     bash_command = ['python3',
                     'ics_sim/ScapyAttacker.py',
@@ -37,17 +37,17 @@ def _do_mitm_scapy_attack(log_dir, log_file, destination, timeout=30, noise=0.1)
                     '--attack', 'mitm',
                     '--timeout', str(timeout),
                     '--parameter', str(noise),
-                    '--destination', destination]
+                    '--target', target]
 
     _do_attack(log_dir, log_file, bash_command)
     subprocess.run(['echo', '1'], stdout=open('/proc/sys/net/ipv4/ip_forward',"w"))
 
 
-def _do_scan_nmap_attack(log_dir, log_file, destination):
+def _do_scan_nmap_attack(log_dir, log_file, target):
     bash_command = ['nmap',
                     '-p-',
                     '-oN', log_file,
-                    destination]
+                    target]
 
     _do_attack(log_dir, log_file, bash_command)
 
@@ -60,10 +60,10 @@ def _do_command_injection_attack(log_dir, log_file, command_injection_agent, com
     _do_attack(log_dir, log_file, bash_command)
 
 
-def _do_ddos_attack(log_dir, log_file, ddos_agent_path, num_process, destination):
+def _do_ddos_attack(log_dir, log_file, ddos_agent_path, timeout,  num_process, target):
     processes = []
     for i in range(num_process):
-        processes.append(f'python3 {ddos_agent_path} A{i} {destination} {log_file}')
+        processes.append(f'python3 {ddos_agent_path} Agent{i} --timeout {timeout} --target {target} --log_path {log_file}')
 
     bash_command = (' & '.join(processes)).split(' ')
     _do_attack(log_dir, log_file, bash_command)

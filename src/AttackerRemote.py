@@ -1,46 +1,41 @@
 import json
 import logging
-import os
-import subprocess
 import threading
 import time
-from datetime import datetime, timedelta
-from time import sleep
 import paho.mqtt.client as mqtt
 from AttackerBase import AttackerBase
 from MqttHelper import read_mqtt_params
 import queue
 
 
+def find_device_address(device_name):
+    if device_name.lower() == 'plc1':
+        return '192.168.0.11'
+    elif device_name.lower() == 'plc2':
+        target = '192.168.0.12'
+
+    elif device_name.lower() == 'hmi1':
+        target = '192.168.0.21'
+
+    elif device_name.lower() == 'hmi2':
+        target = '192.168.0.22'
+    else:
+        raise Exception(f'target:({device_name}) is not recognized!')
+
+
 class AttackerRemote(AttackerBase):
 
-    def __init__(self):
+    def __init__(self, remote_connection_file):
         AttackerBase.__init__(self, 'attacker_remote')
-
-        self.__attack_sname_to_fname_mapper = {
-            'ip-scan': 'scan-scapy',
-            'port-scan': 'scan-nmap',
-            'ddos': 'ddos',
-            'replay': 'replay-scapy',
-            'mitm': 'mitm-scapy'
-        }
-
+        self.remote_connection_file = remote_connection_file
         self.attacksQueue = queue.Queue()
         self.client = mqtt.Client()
-        self.report("debug",level=logging.INFO)
-        self.setup_mqtt = threading.Thread(target=self.setup_mqtt_client)
-        self.setup_mqtt.start()
+        self.mqtt_thread = threading.Thread(target=self.setup_mqtt_client)
+        self.mqtt_thread.start()
 
     def setup_mqtt_client(self):
-        temp_address = "input/sample_mqtt_connection.txt"
-
-        connection_params = read_mqtt_params(temp_address)
+        connection_params = read_mqtt_params(self.remote_connection_file)
         connection_params['topic'] = connection_params['topic'] + '/#'
-        print(connection_params)
-
-        # Set up callback functions
-        self.client.on_subscribe = self.on_subscribe
-        self.client.on_message = self.on_message
 
         if connection_params.keys().__contains__('username') and connection_params.keys().__contains__('password'):
             print('password')
@@ -48,11 +43,11 @@ class AttackerRemote(AttackerBase):
             password = connection_params['password']
             self.client.username_pw_set(username, password)
 
+        # Set up callback functions
         self.client.on_subscribe = self.on_subscribe
         self.client.on_message = self.on_message
 
         self.client.connect(connection_params['address'], int(connection_params['port']))
-
         self.client.subscribe(connection_params['topic'], qos=1)
         self.client.loop_forever()
 
@@ -60,8 +55,7 @@ class AttackerRemote(AttackerBase):
         self.report("Subscribed: " + str(mid) + " " + str(granted_qos), level=logging.INFO)
 
     def on_message(self, client, userdata, msg):
-        self.report("message received",level=logging.INFO)
-        self.report(msg.topic + " " + str(msg.qos) + " " + str(msg.payload),level=logging.INFO)
+        self.report(msg.topic + " " + str(msg.qos) + " " + str(msg.payload), level=logging.INFO)
         self.attacksQueue.put(msg)
 
     def _logic(self):
@@ -69,29 +63,57 @@ class AttackerRemote(AttackerBase):
             self.process_messages(self.attacksQueue.get())
         time.sleep(2)
 
-    def process_messages(self, attack_data):
-        self.report('attacker_remote start apply following attack',level=logging.INFO)
-        attack_dic = json.loads(attack_data.payload.decode("utf-8"))
-        json_attack_key = "attack"
+    def process_messages(self, msg):
+        msg = json.loads(msg.payload.decode("utf-8"))
+        self.report(f'Start processing incoming message: ({msg})', level=logging.INFO)
 
-        if not attack_dic.keys().__contains__(json_attack_key):
-            print(attack_dic)
-            self.report('Json is invalid. cannot find attack tag!', level=logging.ERROR)
-            return
-        attack_short_name = attack_dic[json_attack_key]
+        try:
+            attack = self.find_tag_in_msg(msg, 'attack')
 
-        if not self.__attack_sname_to_fname_mapper.keys().__contains__(attack_short_name):
-            self.report(f'cannot find any script for attack = \'{attack_short_name}\'', level=logging.ERROR)
-            return
-        attack_full_name = self.__attack_sname_to_fname_mapper[attack_short_name]
+            if attack == 'ip-scan':
+                self._scan_scapy_attack()
 
-        self._apply_attack(attack_short_name, attack_full_name)
+            elif attack == 'ddos':
+                timeout = self.find_tag_in_msg(msg, 'timeout')
+                target = self.find_tag_in_msg(msg, 'target')
+                target = find_device_address(target)
+                self._ddos_attack(timeout=timeout, target=target)
 
+            elif attack == 'port-scan':
+                self._scan_nmap_attack()
 
+            elif attack == 'mitm':
+                mode = self.find_tag_in_msg(msg, 'mode')
+                timeout = self.find_tag_in_msg(msg, 'timeout')
+                target = '192.168.0.1/24'
+                if mode.lower() == 'link':
+                    target_1 = self.find_tag_in_msg(msg, 'target1')
+                    target_2 = self.find_tag_in_msg(msg, 'target2')
+                    target = target_1 + "," + target_2
+                self._mitm_scapy_attack(target=target, timeout=timeout)
 
+            elif attack == 'replay':
+                mode = self.find_tag_in_msg(msg, 'mode')
+                timeout = self.find_tag_in_msg(msg, 'timeout')
+                target = '192.168.0.1/24'
+                replay = self.find_tag_in_msg(msg, 'replay')
+                if mode.lower() == 'link':
+                    target_1 = self.find_tag_in_msg(msg, 'target1')
+                    target_2 = self.find_tag_in_msg(msg, 'target2')
+                    target = target_1 + "," + target_2
+                self._replay_scapy_attack(target=target, timeout=timeout, replay_count=replay)
+            else:
+                raise Exception(f"attack type: ({attack}) is not recognized!")
+        except Exception as e:
+            self.report(e.__str__())
 
+    @staticmethod
+    def find_tag_in_msg(msg, tag):
+        if not msg.keys().__contains__(tag):
+            raise Exception('Cannot find tag name:({tag}) in message!')
+        return msg[tag]
 
 
 if __name__ == '__main__':
-    attackerRemote = AttackerRemote()
+    attackerRemote = AttackerRemote("input/sample_mqtt_connection.txt")
     attackerRemote.start()

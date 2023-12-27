@@ -24,21 +24,19 @@ class Attacker(AttackerBase):
 
     def _logic(self):
         self.report(self.__create_menu())
+        attack_cnt = len(self.attack_list)
 
         try:
-            attack_name = int(input('your choice (1 to {}): '.format(self.attack_cnt)))
+            attack_name = int(input('your choice (1 to {}): '.format(attack_cnt)))
 
             if int(attack_name) == 0:
                 os.system('clear')
                 return
 
-            attack_short_name = attack_name
-
-            if 0 < attack_name <= self.attack_cnt:
+            if 0 < attack_name <= attack_cnt:
                 attack_name = list(self.attack_list.keys())[attack_name-1]
-                attack_short_name = self.attack_list[attack_name]
 
-            self._apply_attack(attack_short_name, attack_name)
+            self._apply_attack(attack_name)
 
         except ValueError as e:
             self.report(e.__str__())

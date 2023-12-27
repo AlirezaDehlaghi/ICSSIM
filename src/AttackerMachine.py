@@ -43,9 +43,7 @@ class AttackerMachine(AttackerBase):
 
         for attack_name in self.__attack_scenario:
             try:
-                attack_short_name = self.attack_list[attack_name]
-
-                self._apply_attack(attack_short_name, attack_name)
+                self._apply_attack(attack_name)
 
                 if not self.__status_board.keys().__contains__(attack_name):
                     self.__status_board[attack_name] = 0
