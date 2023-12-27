@@ -1,4 +1,4 @@
 type: MQTT
 address: broker.mqttdashboard.com
 port: 1883
-topic: testtopic/icssim
+topic: testtopic/142
