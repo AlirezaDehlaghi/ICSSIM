@@ -8,19 +8,7 @@ from MqttHelper import read_mqtt_params
 import queue
 
 
-def find_device_address(device_name):
-    if device_name.lower() == 'plc1':
-        return '192.168.0.11'
-    elif device_name.lower() == 'plc2':
-        target = '192.168.0.12'
 
-    elif device_name.lower() == 'hmi1':
-        target = '192.168.0.21'
-
-    elif device_name.lower() == 'hmi2':
-        target = '192.168.0.22'
-    else:
-        raise Exception(f'target:({device_name}) is not recognized!')
 
 
 class AttackerRemote(AttackerBase):
@@ -100,7 +88,7 @@ class AttackerRemote(AttackerBase):
                 if mode.lower() == 'link':
                     target_1 = self.find_tag_in_msg(msg, 'target1')
                     target_2 = self.find_tag_in_msg(msg, 'target2')
-                    target = target_1 + "," + target_2
+                    target = self.find_device_address(target_1) + "," + self.find_device_address(target_2)
                 self._replay_scapy_attack(target=target, timeout=timeout, replay_count=replay)
             else:
                 raise Exception(f"attack type: ({attack}) is not recognized!")
@@ -112,6 +100,21 @@ class AttackerRemote(AttackerBase):
         if not msg.keys().__contains__(tag):
             raise Exception(f'Cannot find tag name: ({tag}) in message!')
         return msg[tag]
+
+    @staticmethod
+    def find_device_address(device_name):
+        if device_name.lower() == 'plc1':
+            return '192.168.0.11'
+        elif device_name.lower() == 'plc2':
+            target = '192.168.0.12'
+
+        elif device_name.lower() == 'hmi1':
+            target = '192.168.0.21'
+
+        elif device_name.lower() == 'hmi2':
+            target = '192.168.0.22'
+        else:
+            raise Exception(f'target:({device_name}) is not recognized!')
 
 
 if __name__ == '__main__':
