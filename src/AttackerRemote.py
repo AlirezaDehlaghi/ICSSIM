@@ -106,13 +106,13 @@ class AttackerRemote(AttackerBase):
         if device_name.lower() == 'plc1':
             return '192.168.0.11'
         elif device_name.lower() == 'plc2':
-            target = '192.168.0.12'
+            return '192.168.0.12'
 
         elif device_name.lower() == 'hmi1':
-            target = '192.168.0.21'
+            return '192.168.0.21'
 
         elif device_name.lower() == 'hmi2':
-            target = '192.168.0.22'
+            return '192.168.0.22'
         else:
             raise Exception(f'target:({device_name}) is not recognized!')
 
