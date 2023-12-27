@@ -68,7 +68,7 @@ class DDosAgent(HMI):
                             help='IP of PLC which is target of attack!', default='192.168.0.11',
                             required=True)
 
-        parser.add_argument('--log_path', metavar='Log file',
+        parser.add_argument('--log', metavar='Log file',
                             help='the file to write logs!', default='./logs/attack-logs/log-ddos.log',
                             required=True)
 
@@ -81,7 +81,7 @@ class DDosAgent(HMI):
 if __name__ == '__main__':
     args = DDosAgent.get_args()
 
-    directory, filename = os.path.split(args.log_path)
+    directory, filename = os.path.split(args.log)
     logger = Runnable.setup_logger(
         filename,
         logging.Formatter('%(asctime)s %(levelname)s %(message)s'),
