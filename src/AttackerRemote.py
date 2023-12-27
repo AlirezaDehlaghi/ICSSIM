@@ -77,7 +77,7 @@ class AttackerRemote(AttackerBase):
                 if mode.lower() == 'link':
                     target_1 = self.find_tag_in_msg(msg, 'target1')
                     target_2 = self.find_tag_in_msg(msg, 'target2')
-                    target = target_1 + "," + target_2
+                    target = self.find_device_address(target_1) + "," + self.find_device_address(target_2)
                 self._mitm_scapy_attack(target=target, timeout=timeout)
 
             elif attack == 'replay':
