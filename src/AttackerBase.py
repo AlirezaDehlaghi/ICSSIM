@@ -163,7 +163,7 @@ class AttackerBase(Runnable, ABC):
 
         end = datetime.now()
         start = start + timedelta(seconds=5)
-        self._post_apply_attack(attack_name=name, start_time=start, end_time=end, post_wait_time=40)
+        self._post_apply_attack(attack_name=name, start_time=start, end_time=end, post_wait_time=20)
 
     def _post_apply_attack(self, attack_name, start_time, end_time, post_wait_time):
         self.attack_history.info(
