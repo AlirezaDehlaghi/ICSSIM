@@ -52,10 +52,9 @@ class AttackerRemote(AttackerBase):
         time.sleep(2)
 
     def process_messages(self, msg):
-        msg = json.loads(msg.payload.decode("utf-8"))
-        self.report(f'Start processing incoming message: ({msg})', level=logging.INFO)
-
         try:
+            msg = json.loads(msg.payload.decode("utf-8"))
+            self.report(f'Start processing incoming message: ({msg})', level=logging.INFO)
             attack = self.find_tag_in_msg(msg, 'attack')
 
             if attack == 'ip-scan':
