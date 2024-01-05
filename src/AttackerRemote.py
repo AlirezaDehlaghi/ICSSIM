@@ -16,6 +16,7 @@ class AttackerRemote(AttackerBase):
     def __init__(self, remote_connection_file):
         AttackerBase.__init__(self, 'attacker_remote')
         self.remote_connection_file = remote_connection_file
+        self.applying_attack = False
         self.attacksQueue = queue.Queue()
         self.client = mqtt.Client()
         self.mqtt_thread = threading.Thread(target=self.setup_mqtt_client)
@@ -44,11 +45,16 @@ class AttackerRemote(AttackerBase):
 
     def on_message(self, client, userdata, msg):
         self.report(msg.topic + " " + str(msg.qos) + " " + str(msg.payload), level=logging.INFO)
-        self.attacksQueue.put(msg)
+        if self.applying_attack:
+            self.report(f'Discard applying attack ({str(msg.payload)}) since already applying an attack.')
+        else:
+            self.attacksQueue.put(msg)
 
     def _logic(self):
         if not self.attacksQueue.empty():
+            self.applying_attack = True
             self.process_messages(self.attacksQueue.get())
+            self.applying_attack = False
         time.sleep(2)
 
     def process_messages(self, msg):
