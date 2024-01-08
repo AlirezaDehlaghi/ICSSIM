@@ -1,0 +1,8 @@
+type: MQTT
+address: <sample mqqt broker like: broker.mqttdashboard.com>
+port: <1883>
+topic: <the sample topic for mqtt messages like testtopic/141>
+
+# it will skipp lines with # signs
+# username: <sample username>
+# password  <sample password>

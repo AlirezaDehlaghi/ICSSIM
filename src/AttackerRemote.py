@@ -15,14 +15,12 @@ class AttackerRemote(AttackerBase):
 
     def __init__(self, remote_connection_file):
         AttackerBase.__init__(self, 'attacker_remote')
-        self.remote_connection_file = ""
+        self.remote_connection_file = remote_connection_file
         self.enabled = False
         self.applying_attack = False
         self.attacksQueue = queue.Queue()
         self.client = mqtt.Client()
         self.mqtt_thread = False
-
-
 
     def setup_mqtt_client(self):
         connection_params = read_mqtt_params(self.remote_connection_file)
@@ -53,6 +51,7 @@ class AttackerRemote(AttackerBase):
             self.attacksQueue.put(msg)
 
     def try_enable(self):
+
         sample = self._make_text("""
         type: MQTT
         address: <server_address>.com
@@ -61,27 +60,34 @@ class AttackerRemote(AttackerBase):
         username: <optional username>
         password: <optional password>""", Runnable.COLOR_GREEN)
 
-        message = """
-        Do you want to enable attacker_remote? if yes, you have to provide adress of connection file. 
-        Connection file contains text file containing required info for making MQTT connection. 
+        message = f"""
+        
+        Please make sure you have right configuration in \"{self._make_text(self.remote_connection_file, Runnable.COLOR_GREEN)}\" file, before enabling attacker_remote!.
+          
+        Connection file must contains text file including of required info for making MQTT connection. 
         Sample of connection file:
         """ + sample + f"""
-        Please insert a path to connection file. (current directory: {os.getcwd()})
-        Connection file: """
+        Do you want to enable attacker_remote (y/n)?: """
 
         response = input(message)
-        if not os.path.exists(response):
-            self.report(f'Provided path ({response}) not exists.')
+        if not (response.lower() == "y" or response.lower() == "yes"):
             return
 
-        connection_params = read_mqtt_params(response)
-        if not all(key in connection_params for key in ["type", "address", "port", "topic" ]):
-            self.report(f'Connection file ({response}) is in wrong format.')
+        connection_params = read_mqtt_params(self.remote_connection_file)
+        if not all(key in connection_params for key in ["type", "address", "port", "topic"]):
+            self.report(f'Connection file ({self.remote_connection_file}) is in wrong format. Not found correct keys!',
+                        logging.ERROR)
             return
+
+        for value in connection_params.values():
+            if str(value).startswith("<") or str(value).endswith(">"):
+                self.report(
+                    f'Connection file ({self.remote_connection_file}) is in wrong format. Not found correct values!',
+                    logging.ERROR)
+                return
 
         print("connection file compiled!\n")
 
-        self.remote_connection_file = response
         self.mqtt_thread = threading.Thread(target=self.setup_mqtt_client)
         self.mqtt_thread.start()
         self.enabled = True
@@ -95,7 +101,6 @@ class AttackerRemote(AttackerBase):
             self.applying_attack = False
         else:
             time.sleep(2)
-
 
     def process_messages(self, msg):
         try:
@@ -162,8 +167,6 @@ class AttackerRemote(AttackerBase):
             raise Exception(f'target:({device_name}) is not recognized!')
 
 
-
-
 if __name__ == '__main__':
-    attackerRemote = AttackerRemote("input/sample_mqtt_connection.txt")
+    attackerRemote = AttackerRemote("AttackerRemoteConnection.txt")
     attackerRemote.start()
