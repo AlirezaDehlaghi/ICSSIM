@@ -1,0 +1,10 @@
+# it will skipp lines with # signs
+
+type: MQTT
+address: <sample MQTT broker like: broker.mqttdashboard.com>
+port: <1883>
+topic: <The sample topic for mqtt messages like: testtopic/141>
+
+
+# username: <sample username>
+# password  <sample password>

@@ -13,14 +13,74 @@ from ics_sim.Device import Runnable
 
 class AttackerRemote(AttackerBase):
 
-    def __init__(self, remote_connection_file):
+    def __init__(self):
         AttackerBase.__init__(self, 'attacker_remote')
-        self.remote_connection_file = remote_connection_file
+
+        self.remote_connection_file = ''
         self.enabled = False
         self.applying_attack = False
+        self.mqtt_thread = False
+
         self.attacksQueue = queue.Queue()
         self.client = mqtt.Client()
-        self.mqtt_thread = False
+
+    def _logic(self):
+
+        if not self.enabled:
+            self.__try_enable()
+        elif not self.attacksQueue.empty():
+            self.process_messages(self.attacksQueue.get())
+        else:
+            time.sleep(2)
+
+    def __try_enable(self):
+
+        sample = ""
+
+        with open("MQTTSampleConnection.txt", 'r') as file:
+            sample = self._make_text(file.read(), Runnable.COLOR_GREEN)
+
+        message = f"""
+        To enable attacker remote please provide a MQTT connection file contain required data for connection. 
+        The connection file sample is:
+{sample}
+        
+        (current dir: {os.getcwd()})
+        Connection file address:   
+        """
+
+        response = input(message)
+
+        if not os.path.exists(response):
+            self.report(f'Connection file not found({response})!', logging.ERROR)
+            return
+
+        connection_params = read_mqtt_params(response)
+        if not all(key in connection_params for key in ["type", "address", "port", "topic"]):
+            self.report(f'Connection file ({self.remote_connection_file}) is in wrong format. Not found correct keys!',
+                        logging.ERROR)
+            return
+
+        for value in connection_params.values():
+            if str(value).startswith("<") or str(value).endswith(">"):
+                self.report(
+                    f'Connection file ({self.remote_connection_file}) is in wrong format. Not found correct values!',
+                    logging.ERROR)
+                return
+
+        self.remote_connection_file = response
+
+        new_msg = "connection file compiled! with following params:\n"
+        for key, value in connection_params.items():
+            new_msg += f'{key}: {value}\n'
+
+        new_msg = Runnable._make_text(new_msg, Runnable.COLOR_YELLOW)
+
+        self.report(new_msg)
+
+        self.mqtt_thread = threading.Thread(target=self.setup_mqtt_client)
+        self.mqtt_thread.start()
+        self.enabled = True
 
     def setup_mqtt_client(self):
         connection_params = read_mqtt_params(self.remote_connection_file)
@@ -50,65 +110,12 @@ class AttackerRemote(AttackerBase):
         else:
             self.attacksQueue.put(msg)
 
-    def try_enable(self):
 
-        sample = self._make_text("""
-        type: MQTT
-        address: <server_address>.com
-        port: <port>
-        topic: <testtopic>
-        username: <optional username>
-        password: <optional password>""", Runnable.COLOR_GREEN)
 
-        message = f"""
-        
-        Please make sure you have right configuration in \"{self._make_text(self.remote_connection_file, Runnable.COLOR_GREEN)}\" file, before enabling attacker_remote!.
-          
-        Connection file must contains text file including of required info for making MQTT connection. 
-        Sample of connection file:
-        """ + sample + f"""
-        Do you want to enable attacker_remote (y/n)?: """
-
-        response = input(message)
-        if not (response.lower() == "y" or response.lower() == "yes"):
-            return
-
-        connection_params = read_mqtt_params(self.remote_connection_file)
-        if not all(key in connection_params for key in ["type", "address", "port", "topic"]):
-            self.report(f'Connection file ({self.remote_connection_file}) is in wrong format. Not found correct keys!',
-                        logging.ERROR)
-            return
-
-        for value in connection_params.values():
-            if str(value).startswith("<") or str(value).endswith(">"):
-                self.report(
-                    f'Connection file ({self.remote_connection_file}) is in wrong format. Not found correct values!',
-                    logging.ERROR)
-                return
-
-        new_msg = "connection file compiled! with following params:\n"
-        for key,value in connection_params.items():
-            new_msg += f'{key}: {value}'
-
-        new_msg = Runnable._make_text(new_msg, Runnable.COLOR_YELLOW)
-
-        self.report(new_msg)
-
-        self.mqtt_thread = threading.Thread(target=self.setup_mqtt_client)
-        self.mqtt_thread.start()
-        self.enabled = True
-
-    def _logic(self):
-        if not self.enabled:
-            self.try_enable()
-        elif not self.attacksQueue.empty():
-            self.applying_attack = True
-            self.process_messages(self.attacksQueue.get())
-            self.applying_attack = False
-        else:
-            time.sleep(2)
 
     def process_messages(self, msg):
+        self.applying_attack = True
+
         try:
             msg = json.loads(msg.payload.decode("utf-8"))
             self.report(f'Start processing incoming message: ({msg})', level=logging.INFO)
@@ -146,10 +153,14 @@ class AttackerRemote(AttackerBase):
                     target_2 = self.find_tag_in_msg(msg, 'target2')
                     target = self.find_device_address(target_1) + "," + self.find_device_address(target_2)
                 self._replay_scapy_attack(target=target, timeout=timeout, replay_count=replay)
+
             else:
                 raise Exception(f"attack type: ({attack}) is not recognized!")
         except Exception as e:
             self.report(e.__str__())
+
+        self.applying_attack = False
+
 
     @staticmethod
     def find_tag_in_msg(msg, tag):
@@ -174,5 +185,5 @@ class AttackerRemote(AttackerBase):
 
 
 if __name__ == '__main__':
-    attackerRemote = AttackerRemote("AttackerRemoteConnection.txt")
+    attackerRemote = AttackerRemote()
     attackerRemote.start()
