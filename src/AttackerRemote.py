@@ -86,7 +86,13 @@ class AttackerRemote(AttackerBase):
                     logging.ERROR)
                 return
 
-        print("connection file compiled!\n")
+        new_msg = "connection file compiled! with following params:\n"
+        for key,value in connection_params.items():
+            new_msg += f'{key}: {value}'
+
+        new_msg = Runnable._make_text(new_msg, Runnable.COLOR_YELLOW)
+
+        self.report(new_msg)
 
         self.mqtt_thread = threading.Thread(target=self.setup_mqtt_client)
         self.mqtt_thread.start()
