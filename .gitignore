@@ -8,6 +8,7 @@ deployments/push-attacker-docker.sh
 deployments/push-ics-docker.sh
 .idea
 .idea/
+src/connection.txt
 src/logs/*
 !src/logs/attack-logs/
 src/logs/attack-logs/*
