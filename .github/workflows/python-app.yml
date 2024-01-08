@@ -36,7 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest and calculate coverage
       run: |
-        python -m pytest --cov-report "xml:coverage.xml"  --cov=.
+        python -m pytest --cov-report "xml:coverage.xml"  --cov=./src
     - name: Create Coverage
       if: ${{ github.event_name == 'pull_request' }}
       uses: orgoro/coverage@v3
