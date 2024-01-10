@@ -40,7 +40,9 @@ class SensorConnector(Physics):
     def read(self, tag):
         if tag in self._sensors.keys():
             value = self._get(tag)
+            print("reading value" + tag)
             value += random.uniform(value, -1 * value) * self._sensors[tag]
+
             return value
         else:
             raise LookupError()
