@@ -77,7 +77,7 @@ class SQLiteConnector(Connector):
                 return value
 
             except sqlite3.Error as e:
-                error('_set in ICSSIM connection %s: ' % e.args[0])
+                error(f'_set in ICSSIM connection {e.args[0]} for setting tag {key}')
 
     def get(self, key):
         get_query = """SELECT {} FROM {} WHERE {} = ?""".format(
@@ -94,7 +94,7 @@ class SQLiteConnector(Connector):
                 return record[0]
 
             except sqlite3.Error as e:
-                error('_get in ICSSIM connection %s: ' % e.args[0])
+                error(f'_get in ICSSIM connection {e.args[0]} for getting tag {key}')
 
 
 class MemcacheConnector(Connector):
