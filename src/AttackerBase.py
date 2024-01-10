@@ -62,23 +62,6 @@ class AttackerBase(Runnable, ABC):
 
         return attack_history
 
-    # def _old_apply_attack(self, short_name, full_name):
-    #     # todo: we may remote this function in future.
-    #     attack_path = os.path.join(self.attack_path, str(full_name) + ".sh")
-    #
-    #     if not os.path.isfile(attack_path):
-    #         raise ValueError('command {} does not exist'.format(attack_path))
-    #
-    #     self.report(self._make_text('running ' + attack_path, self.COLOR_YELLOW))
-    #     log_file = os.path.join(self.log_path, "log-{}.txt".format(full_name))
-    #     start_time = datetime.now()
-    #
-    #     # todo: changed for test
-    #     if full_name == "scan-scapy":
-    #         _do_scan_scapy_attack(self.log_path, log_file)
-    #     else:
-    #         subprocess.run([attack_path, self.log_path, log_file])
-
     def _apply_attack(self, name):
         if name == AttackerBase.NAME_ATTACK_SCAN_SCAPY:
             self._scan_scapy_attack()

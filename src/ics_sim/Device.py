@@ -40,9 +40,6 @@ class SensorConnector(Physics):
     def read(self, tag):
         if tag in self._sensors.keys():
             value = self._get(tag)
-            # if value is None:   # todo: we have to comment this section
-            #     print(f"The tag: {tag} recieved null value from databse. return -1!")
-            #     return -1
             value += random.uniform(value, -1 * value) * self._sensors[tag]
             return value
         else:
@@ -423,7 +420,7 @@ class HMI(DcsComponent):
 
     def _before_start(self):
         DcsComponent._before_start(self)
-        self._set_clear_scr(False) # todo: return it back to false
+        self._set_clear_scr(True)
 
     def _logic(self):
         self._display()
