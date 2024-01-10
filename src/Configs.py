@@ -141,7 +141,7 @@ class Connection:
 
     CONNECTION_CONFIG = {
         SimulationConfig.EXECUTION_MODE_GNS3: MEMCACHE_DOCKER_CONNECTION,
-        SimulationConfig.EXECUTION_MODE_DOCKER: MEMCACHE_DOCKER_CONNECTION, #todo : return back to sqlite connection
+        SimulationConfig.EXECUTION_MODE_DOCKER: SQLITE_CONNECTION, #todo : return back to sqlite connection
         SimulationConfig.EXECUTION_MODE_LOCAL: SQLITE_CONNECTION
     }
     CONNECTION = CONNECTION_CONFIG[SimulationConfig.EXECUTION_MODE]
