@@ -91,6 +91,8 @@ class SQLiteConnector(Connector):
                 cursor = conn.cursor()
                 cursor.execute(get_query, [key])
                 record = cursor.fetchone()
+
+                print(f"read {key} with value {record[0]}")
                 return record[0]
 
             except sqlite3.Error as e:
