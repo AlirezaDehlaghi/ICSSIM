@@ -77,10 +77,9 @@ class SQLiteConnector(Connector):
                 return value
 
             except sqlite3.Error as e:
-                error('_set %s: ' % e.args[0])
+                error('_set in ICSSIM connection %s: ' % e.args[0])
 
     def get(self, key):
-        print("reading key")
         get_query = """SELECT {} FROM {} WHERE {} = ?""".format(
             self._value,
             self._name,
@@ -92,12 +91,10 @@ class SQLiteConnector(Connector):
                 cursor = conn.cursor()
                 cursor.execute(get_query, [key])
                 record = cursor.fetchone()
-
-                print(f"read {key} with value {record}")
                 return record[0]
 
             except sqlite3.Error as e:
-                error('_get %s: ' % e)
+                error('_get in ICSSIM connection %s: ' % e.args[0])
 
 
 class MemcacheConnector(Connector):
