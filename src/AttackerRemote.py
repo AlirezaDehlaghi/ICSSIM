@@ -22,7 +22,7 @@ class AttackerRemote(AttackerBase):
         self.mqtt_thread = False
 
         self.attacksQueue = queue.Queue()
-        self.client = mqtt.Client()
+        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
 
     def _logic(self):
 
