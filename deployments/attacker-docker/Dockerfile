@@ -25,7 +25,7 @@ RUN apt-get update \
 && apt-get install -y ettercap-common \
 && apt-get install -y nmap \
 && apt-get install -y python3-scapy \
-&& pip install paho-mqtt
+&& pip install paho-mqtt<2.0.0
 
 WORKDIR /src
 
