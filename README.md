@@ -73,7 +73,14 @@ Make sure that you have already installed the following applications and tools.
 
 * git
 * Python
-* Make sure that you installed required packages: pyModbusTCP, memcached
+* pip
+
+Make sure that you installed required packages: pyModbusTCP, memcache
+```
+pip install pyModbusTCP
+pip install memcache
+
+```
 
 
 ### Getting ICSSIM and the sample project
