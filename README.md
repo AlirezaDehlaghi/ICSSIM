@@ -52,7 +52,8 @@ sudo docker-compose ps
 ```
 
 ### Operating the control system and apply cyberattacks
-In the directory [deployments](deployments/) there exist some scripts such as [hmi1.sh](deployments/hmi1.sh), [hmi2.sh](deployments/hmi2.sh) or [attacker.sh](deployments/attacker.sh) which can attach user to the container. 
+In the directory [deployments](deployments/) there exist some scripts such as [hmi1.sh](deployments/hmi1.sh), [hmi2.sh](deployments/hmi2.sh) or [attacker.sh](deployments/attacker.sh) which can attach user to the container.
+
 ## Run in GNS3
 To run the ICSSIM and the sample Bottle Filling factory clone the prject and use the portable GNS3 file to create a new project in GNS3.
 
@@ -65,3 +66,30 @@ git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
 ### Import Project in GNS3
 Import the portable project ([deployments/GNS3/ICSSIM-GNS3-Portable.gns3project](deployments/GNS3/ICSSIM-GNS3-Portable.gns3project)) using menu **File->Import Portable Project**
 
+## RUN as a single Python project
+
+### Pre steps
+Make sure that you have already installed the following applications and tools. 
+
+* git
+* Python
+* Make sure that you installed required packages: pyModbusTCP, memcached
+
+
+### Getting ICSSIM and the sample project
+Clone The probject into your local directory using following git command.
+```
+git clone https://github.com/AlirezaDehlaghi/ICSSIM ICSSIM
+```
+
+check the file [Configs.py](src/Configs.py) and make sure that EXECUTION_MODE varibale is set to EXECUTION_MODE_DOCKER as follow:
+```
+EXECUTION_MODE = EXECUTION_MODE_LOCAL
+```
+
+### Running the sample project 
+Run the sample project using the running start.py
+```
+cd ICSSIM/src
+python3 start.py
+```
